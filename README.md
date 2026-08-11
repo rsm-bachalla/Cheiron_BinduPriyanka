@@ -65,6 +65,7 @@ curl -X POST localhost:8000/query \
 | `CTGOV_MAX_RECORDS` | `1000` | Per-query fetch cap; truncation is disclosed |
 | `CITATIONS_PER_POINT` | `3` | Source records attached to each data point |
 | `NETWORK_TOP_EDGES` | `40` | Sponsor-drug edges kept; the cap is disclosed |
+| `API_BASE_URL` | `http://localhost:8000` | Where the Streamlit demo looks for this API |
 
 **The service runs without credentials.** With no key it falls back to a
 deterministic pattern planner that handles a narrow set of phrasings and refuses
@@ -336,22 +337,66 @@ app/
   aggregate.py        deterministic counting -> Bucket (incl. grouped comparison)
   viz.py              chart selection + spec construction
   citations.py        NCT references per data point
+  network.py          sponsor-drug graph -> nodes + edges
   llm/
     base.py           LLMClient Protocol + strict JSON-schema translation
     openai_client.py  OpenAI structured outputs over the shared httpx pool
     prompts.py        planner system prompt + few-shot examples
     factory.py        provider selection
   schemas/            plan.py (LLM contract), study.py, api.py (public contract)
+demo/streamlit_app.py Streamlit UI; an HTTP client, imports nothing from app/
 docs/api-findings.md  verified upstream API behaviour
-  network.py          sponsor-drug graph -> nodes + edges
 tests/                151 tests, offline
 ```
 
+## Demo
+
+A Streamlit UI that consumes this API over HTTP. It exists to show that the
+response contract is genuinely renderable by a frontend that knows nothing about
+the backend, so it imports no module from `app/` and performs no filtering,
+counting, or chart selection of its own — every renderer reads
+`visualization.encoding` to learn which key holds the category, the value, and
+the series. A new analysis type emitting the same envelope renders without a
+frontend change.
+
+Two terminals:
+
+```bash
+# Terminal 1 — the API
+make run
+
+# Terminal 2 — the UI, at http://localhost:8501
+streamlit run demo/streamlit_app.py
+```
+
+Point it elsewhere with `API_BASE_URL=https://host streamlit run
+demo/streamlit_app.py`; it defaults to `http://localhost:8000` and shows a live
+reachability indicator in the sidebar. `make demo` runs the same command through
+the virtualenv.
+
+| Chart type | Rendered with |
+| --- | --- |
+| `bar_chart` | `st.bar_chart` (Streamlit-native) |
+| `line_chart` | `st.line_chart` (Streamlit-native) |
+| `geo_ranking` | Altair horizontal bars, to preserve the backend's ranking |
+| `grouped_bar_chart` | Altair `xOffset`, which has no native equivalent |
+| `network_graph` | Altair bipartite diagram + edge table |
+
+Altair and pandas ship with Streamlit, so no graph or plotting library is added
+for any of this. The network is drawn bipartite — sponsors left, drugs right,
+edge width by shared-trial count — rather than force-directed: every edge
+crosses between exactly two node kinds, so the layout is both readable and
+deterministic where a force layout would be a hairball that moves on every
+render.
+
+Each response also renders the planner used, the interpreted intent, the applied
+filters, record counts, per-group truncation for comparisons, the disclosure
+notes, a capped list of the distinct source records behind the chart, and the
+raw JSON.
+
 ## Status
 
-**Working:** all five analyses — `distribution`, `time_trend`, `geo`,
+All five analyses work end to end — `distribution`, `time_trend`, `geo`,
 `comparison`, and `network` — over phase, status, year, country, sponsor, and
 sponsor type, via the OpenAI planner, with citations, disclosure notes, and the
-full fallback ladder.
-
-**Next:** the Streamlit demo, as a pure consumer of this HTTP contract.
+full fallback ladder, and all five render in the Streamlit demo.
