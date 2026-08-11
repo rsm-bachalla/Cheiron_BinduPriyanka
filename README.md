@@ -1,52 +1,63 @@
-# Clinical Trials Insight API
+# Clinical Trials Insight Agent
 
-An AI-enabled backend service that answers natural-language questions about
-clinical trials using the ClinicalTrials.gov API and returns structured,
-frontend-renderable visualization specifications with per-data-point source
-citations.
+## 1. Overview
 
-## Design principle
+This service answers natural-language questions about clinical trials. A
+question goes to OpenAI, which returns a validated plan describing what analysis
+to run; the service then queries the ClinicalTrials.gov v2 API, normalizes the
+records, and computes the answer in ordinary Python. The response is a
+frontend-renderable visualization specification in which every data point carries
+the NCT records that produced it, so any number on a chart can be traced back to
+the registry entries behind it.
 
-**A deterministic analytics pipeline that an LLM configures but never executes.**
+**The LLM decides what analysis to perform; deterministic Python executes the
+analysis.**
 
-The LLM's entire job is to turn a question into one validated `QueryPlan`
-object. Everything after that — filtering, counting, grouping, sorting, date
-normalization, chart selection, citation attachment — is ordinary Python. The
-LLM never sees study data, never counts anything, and never touches citations,
-so it cannot fabricate a number or a source.
+The model never sees study data, never counts anything, and never produces a
+citation, so it has no opportunity to fabricate a figure or a source. Everything
+after the plan — filtering, grouping, counting, sorting, date handling, chart
+selection, graph construction, citation attachment — is deterministic code with
+unit tests.
 
-```
-NL query
-   │
-   ▼
-[1] Planner      ── LLM (structured output) or deterministic patterns ──▶ QueryPlan
-   │                                                                       │
-   │                          enum-validated; refuses rather than guessing
-   ▼
-[2] TrialsClient ── async httpx, Essie filters, paginated, field-projected ──▶ raw JSON
-   │
-   ▼
-[3] Normalizer   ── flatten protocolSection ──▶ list[Study]
-   │
-   ▼
-[4] Aggregator   ── deterministic counting ──▶ list[Bucket] (label, value, nct_ids)
-   │
-   ▼
-[5] VizBuilder   ── operation + dimension ──▶ VisualizationSpec
-   │
-   ▼
-[6] Citations    ── render NCT refs already carried by each bucket ──▶ QueryResponse
-```
-
-Stages 2–6 are pure functions over typed inputs and are individually testable.
-
-## Quick start
+## 2. Demo
 
 ```bash
 make install
 cp .env.example .env     # add your OPENAI_API_KEY
-make run                 # http://localhost:8000/docs
 ```
+
+Two terminals:
+
+```bash
+# Terminal 1 — the API
+make run
+
+# Terminal 2 — the UI
+source .venv/bin/activate
+streamlit run demo/streamlit_app.py
+```
+
+- FastAPI docs: <http://localhost:8000/docs>
+- Streamlit: <http://localhost:8501>
+
+`make install` creates `.venv` but does not activate it, so activate first —
+or run `make demo`, which is the same command through the virtualenv. Point the
+demo at another host with `API_BASE_URL=https://host streamlit run
+demo/streamlit_app.py`; it defaults to `http://localhost:8000` and shows a live
+reachability indicator in the sidebar.
+
+Five questions, one per supported analysis type — these are the buttons in the
+demo:
+
+| Analysis | Question |
+| --- | --- |
+| Distribution | How are breast cancer trials distributed across phases? |
+| Time trend | How has the number of trials for pembrolizumab changed over time? |
+| Geographic | Which countries have the most recruiting trials for lung cancer? |
+| Comparison | Compare trial phases for pembrolizumab vs nivolumab |
+| Network | Show a network of sponsors and drugs for melanoma trials |
+
+Or without the UI:
 
 ```bash
 curl -X POST localhost:8000/query \
@@ -71,42 +82,83 @@ curl -X POST localhost:8000/query \
 deterministic pattern planner that handles a narrow set of phrasings and refuses
 everything else. The full test suite also runs with no key and no network.
 
-## The planner
+## 3. Architecture
 
 ```
-query → OpenAI structured output → Pydantic validation
-      → semantic validation → merge hints → QueryPlan
+Streamlit                 demo/streamlit_app.py — HTTP client, imports nothing from app/
+    ↓
+FastAPI                   main.py — request contract, error contract, shared httpx pool
+    ↓
+OpenAI Query Planner      llm/ + planning.py — structured output, one repair retry
+    ↓
+Validated QueryPlan       schemas/plan.py + plan_validation.py — schema, then coherence
+    ↓
+ClinicalTrials.gov Client clinicaltrials.py — Essie filter.advanced, paginated
+    ↓
+Normalizer                normalize.py — raw protocolSection JSON -> list[Study]
+    ↓
+Deterministic Analytics   aggregate.py (buckets) / network.py (nodes + edges)
+    ↓
+Visualization Builder     viz.py — chart type + encoding from operation and dimension
+    ↓
+Citation Layer            citations.py — NCT refs from the IDs captured while counting
+    ↓
+Structured JSON Response  schemas/api.py — the public contract
 ```
 
-The model returns a `QueryPlan` and nothing else — enum-constrained `operation`
-and `dimension`, typed filters, comparison groups, a title. It never sees study
-data, never counts, and never produces citations.
+- **Streamlit** is a demo client only. It calls `POST /query` over HTTP and
+  imports no backend module.
+- **FastAPI** owns the request/response contract and maps domain exceptions to
+  status codes. One `httpx.AsyncClient` is created at startup and shared by both
+  outbound integrations.
+- **Query planner** turns the question into a `QueryPlan` — an enum-constrained
+  operation, a dimension, typed filters, comparison groups, a title. Nothing else.
+- **Validated QueryPlan** passes Pydantic schema validation and then a separate
+  deterministic coherence check.
+- **ClinicalTrials.gov client** builds Essie `filter.advanced` expressions,
+  paginates by `nextPageToken`, and projects only the fields used.
+- **Normalizer** flattens the nested API response into typed `Study` objects,
+  treating every module as optional.
+- **Analytics** counts. Bucket-shaped analyses go through `aggregate.py`; the
+  relationship graph goes through `network.py`.
+- **Visualization builder** picks the chart type and writes the `encoding` block
+  that tells a frontend which key holds the category, the value, and the series.
+- **Citation layer** renders NCT references from the IDs captured during
+  aggregation, so a data point and its sources cannot disagree.
 
-**Semantic validation is deterministic and lives outside the LLM.** Schema
-validation proves a plan is well-formed; it cannot prove it is coherent. A
-`time_trend` grouped by `sponsor` type-checks and is still nonsense. So
-`plan_validation.py` independently enforces: trends group by year, geo by
-country, network by sponsor; comparisons need ≥2 groups and no other operation
-may carry them; year ranges must be ordered; a plan with no filters at all is
-refused rather than scanning the whole registry.
+Explicitly:
 
-**The failure ladder is bounded at one extra call:**
+- **OpenAI never computes trial counts.** It never receives study records.
+- **OpenAI never constructs citations.** Citations are derived from NCT IDs
+  captured while counting.
+- **ClinicalTrials.gov is the source of truth.** Nothing is inferred about a
+  trial that was not returned by the registry.
+- **Analytics and network construction are deterministic.** Same records in,
+  same numbers and same graph out, with ties broken on stable keys.
 
-| Failure | Response |
-| --- | --- |
-| Schema mismatch or incoherent plan | One repair retry, naming the exact error |
-| Auth / network / rate limit | No retry — re-prompting cannot help |
-| Fallback + query matches a known pattern | Deterministic planner answers it |
-| Fallback + ambiguous query | Structured `422` refusal |
+## 4. Supported analysis types
 
-**Hints override the model.** They are merged after validation, so
-`{"query": "Show recruiting lung cancer trials", "hints": {"status": "COMPLETED"}}`
-yields `COMPLETED`.
+| Analysis | Example | Visualization |
+| --- | --- | --- |
+| Distribution | How are breast cancer trials distributed across phases? | `bar_chart` over phase, status, sponsor, or sponsor type |
+| Time trend | How has the number of trials for pembrolizumab changed over time? | `line_chart` over start year |
+| Geographic ranking | Which countries have the most recruiting trials for lung cancer? | `geo_ranking` — countries ordered by trial count |
+| Comparison | Compare trial phases for pembrolizumab vs nivolumab | `grouped_bar_chart` with one series per group |
+| Sponsor-drug network | Show a network of sponsors and drugs for melanoma trials | `network_graph` — `nodes` and `edges`, `data` empty |
 
-Swapping providers means writing one adapter satisfying the `LLMClient`
-Protocol and adding a branch to `llm/factory.py`. Only OpenAI is implemented.
+Groupable dimensions: `phase`, `status`, `year`, `country`, `sponsor`,
+`sponsor_type`. Filterable fields: drug, condition, sponsor, country, phase,
+status, start year, end year.
 
-## API
+## 5. API
+
+### `GET /health`
+
+```json
+{ "status": "ok" }
+```
+
+Liveness only — it does not check OpenAI or ClinicalTrials.gov reachability.
 
 ### `POST /query`
 
@@ -120,7 +172,7 @@ Protocol and adding a branch to `llm/factory.py`. Only OpenAI is implemented.
 `query` is required. All `hints` are optional and **override** anything the
 planner inferred, so a caller can always force a deterministic filter.
 
-Response (abridged):
+Response (abridged — one bucket of nine, one citation of three):
 
 ```json
 {
@@ -148,10 +200,10 @@ Response (abridged):
   },
   "meta": {
     "query_interpretation": {
-      "intent": "Count breast cancer trials grouped by phase.",
+      "intent": "Break down breast cancer trials by phase.",
       "operation": "distribution",
       "dimension": "phase",
-      "planner": "rulebased"
+      "planner": "openai"
     },
     "filters": { "condition": "breast cancer" },
     "source": "ClinicalTrials.gov",
@@ -163,15 +215,137 @@ Response (abridged):
 }
 ```
 
-Rows are addressable through `encoding`, so a frontend can render any chart type
-generically without special-casing the question that produced it.
+- **`visualization`** — the chart specification: a `type`, a human-readable
+  `title`, an `encoding`, and the rows. Network responses populate `nodes` and
+  `edges` instead of `data`.
+- **`encoding`** — which key in each row is the category (`x`), the value (`y`),
+  and, for comparisons, the series (`series`). A frontend reads this rather than
+  hardcoding field names, so any analysis type renders generically. Fields that
+  do not apply are omitted; the API is served with `response_model_exclude_none`,
+  so absent means "not applicable", not `null`.
+- **`data`** — one row per bucket, each carrying its own citations.
+- **`citations`** — the NCT records behind that specific data point: ID, URL,
+  title, and an `excerpt` quoting the field value that placed the study in that
+  bucket. Capped at `CITATIONS_PER_POINT` per point.
+- **`meta`** — how the answer was produced: the interpreted intent, the operation
+  and dimension chosen, which planner ran, the filters actually applied, the
+  source, record counts, and disclosure notes.
+- **Truncation** — `record_count` is what was analysed and `total_available` is
+  what matched upstream. When the fetch cap bites, `truncated` is `true` and a
+  note states the counts are a sample rather than registry totals. For
+  comparisons `total_available` is omitted and per-group figures appear in
+  `meta.groups` (see §8).
 
-### Comparisons
+### Errors
 
-Each comparison group is its own ClinicalTrials.gov query, fanned out
-concurrently with `asyncio.gather`, and every shared filter in the plan applies
-to all of them. Group membership is decided by upstream matching — never by
-fetching one broad result set and guessing locally who belongs where.
+The service **refuses rather than guesses**:
+
+```json
+{
+  "error": {
+    "code": "unsupported_query",
+    "message": "Could not determine what to group the trials by.",
+    "details": {
+      "reason": "no recognised grouping dimension (phase, status, country, sponsor, year)",
+      "supported": "..."
+    }
+  }
+}
+```
+
+| Code | Status | Meaning |
+| --- | --- | --- |
+| `unsupported_query` | 422 | Intent could not be mapped confidently |
+| `no_results` | 404 | Understood, but no trials matched |
+| `analysis_not_implemented` | 501 | Intent understood; that analysis is not built yet |
+| `upstream_error` | 502 | ClinicalTrials.gov rejected the request or was unreachable |
+
+`501` is deliberately distinct from `422`: it tells the caller their question was
+valid and the capability is simply missing. It is **currently unreachable** —
+all five operations in the plan schema are implemented, so nothing raises it
+today. It is kept because the next operation added to the enum will need it
+before its pipeline exists, and because collapsing it into `422` would tell a
+caller their valid question was unintelligible.
+
+## 6. Query planning
+
+```
+natural language
+  → OpenAI structured output   (strict JSON schema; temperature 0)
+  → Pydantic validation        (enums, types, ranges)
+  → semantic validation        (is this plan coherent?)
+  → hints merged last          (explicit caller filters override the model)
+  → QueryPlan
+```
+
+The model returns a `QueryPlan` and nothing else. `operation` and `dimension` are
+enum-constrained, filters are typed, and OpenAI's strict structured-output mode
+enforces the schema on its side before the response is even parsed.
+
+**Semantic validation is deterministic and lives outside the LLM.** Schema
+validation proves a plan is well-formed; it cannot prove it is coherent. A
+`time_trend` grouped by `sponsor` type-checks and is still nonsense. So
+[plan_validation.py](app/plan_validation.py) independently enforces: trends group
+by year, geo by country, network by sponsor; comparisons need ≥2 distinct groups
+and no other operation may carry them; the comparison field must not also be
+pinned in `filters`; year ranges must be ordered; a plan with no filters at all is
+refused rather than scanning the whole registry.
+
+**Hints override the model**, and are merged after validation, so
+`{"query": "Show recruiting lung cancer trials", "hints": {"status": "COMPLETED"}}`
+yields `COMPLETED`.
+
+**The failure ladder is bounded at one extra call:**
+
+| Failure | Response |
+| --- | --- |
+| Schema mismatch or incoherent plan | One repair retry, naming the exact error |
+| Auth / network / rate limit | No retry — re-prompting cannot help |
+| Fallback + query matches a known pattern | Deterministic planner answers it |
+| Fallback + ambiguous query | Structured `422` refusal |
+
+So there is one safe OpenAI flow with a single bounded repair; the rule-based
+planner catches only obvious supported phrasings; and anything still ambiguous
+returns a structured error rather than a guessed answer. Provider error bodies
+never cross the boundary into client-facing details — only the status code does,
+because OpenAI echoes a partially masked API key back on a 401.
+
+Swapping providers means writing one adapter satisfying the `LLMClient` Protocol
+and adding a branch to [llm/factory.py](app/llm/factory.py). Only OpenAI is
+implemented.
+
+## 7. ClinicalTrials.gov integration
+
+Parameter behaviour was measured against the live API *before* the client was
+written, because getting the query layer wrong produces confidently-wrong answers
+that no amount of downstream correctness recovers. Full write-up:
+[docs/api-findings.md](docs/api-findings.md).
+
+### Upstream API findings
+
+| Finding | Effect on implementation |
+| --- | --- |
+| **`query.*` is relevance search, not filtering.** `query.intr=pembrolizumab` was 84% precise over 200 studies — 32 never mentioned the drug, ranking instead on a title phrase like "a PD-1 inhibitor". | The `query.*` family is not used anywhere. |
+| **`AREA[...]` via `filter.advanced` is precise.** The same drug filter as `AREA[InterventionName]"pembrolizumab"` was 100% precise on the same sample. | All filtering is Essie `filter.advanced`, clauses joined with ` AND `. Status is the exception and uses the native `filter.overallStatus`. |
+| **`pageSize` silently caps at 1000.** `pageSize=1001` returns HTTP 200 with exactly 1000 studies and no warning. | Pagination is driven by `nextPageToken` with an explicit local record cap, never by trusting the requested page size. |
+| **`totalCount` requires `countTotal=true`.** Omitted, the field is simply absent. | The client always sends it on the first page — truncation disclosure depends on knowing the true match count. |
+| **Errors are plain text, not JSON.** `filter.overallStatus=BOGUS` returns `HTTP 400 Invalid value in parameter ...`. | Error handling never assumes a JSON body. Status and phase values are constrained by local enums so those cases are caught before the request is sent. |
+| **Quotes are significant and unbalanced quotes are fatal.** Essie has no escape sequence, so an embedded `"` produces `HTTP 400 token recognition error`. | `_quote()` strips double quotes rather than escaping them, and free-text values from the model are sanitized before reaching the expression. This is an injection surface, not a formatting nicety. |
+| **`phases` has three distinct states:** a phase list, `["NA"]`, or the field absent entirely (typically observational). | Absent and `NA` are kept as separate buckets — "Not Specified" vs "Not Applicable" — rather than collapsed. Genuinely multi-phase studies form their own combined bucket instead of incrementing each phase, so bucket counts sum exactly to the study count. |
+| **`AREA[ConditionSearch]` is a curated search, broader than exact condition matching.** It returned 16,520 breast cancer studies against 14,997 for the stricter `AREA[Condition]`. | `ConditionSearch` is used deliberately: the stricter field drops genuinely relevant trials. The looseness is disclosed here and made auditable by citations. |
+
+Two smaller ones: requested field-projection modules that hold no data come back
+as `{}` rather than being omitted, so normalization treats every module as
+optional; and `startDateStruct.date` occurs as `"2022"`, `"2022-08"`, and
+`"2022-08-11"`, so year extraction takes the leading four characters.
+
+## 8. Comparison design
+
+Each comparison group is its own ClinicalTrials.gov request. The groups are
+fanned out concurrently with `asyncio.gather`, every shared filter in the plan
+applies to all of them, and results stay separate all the way to the response.
+Group membership is decided by upstream matching — never by fetching one broad
+result set and guessing locally who belongs where.
 
 Rows carry a `group` and the encoding declares it as the series:
 
@@ -194,22 +368,23 @@ Output is **dense**: every (label, group) pair is emitted, with an explicit zero
 where a group has no trials, so a gap renders as a zero-height bar rather than a
 missing row a frontend has to infer.
 
-Three honesty rules follow from groups being independent queries:
+Three consequences of groups being independent queries:
 
 - `meta.groups` reports `record_count`, `total_available`, and `truncated` **per
   group**. One series capped at 1000 while the other returns 258 is not a
   like-for-like chart, and the caller can see that.
-- `meta.total_available` is **null** for comparisons. Group match sets overlap —
-  a trial studying both drugs is legitimately in both series — so a combined
-  total would be a number with no defensible meaning.
+- **`total_available` is not summed.** Group match sets legitimately overlap — a
+  trial studying both drugs really is in both series, and one was verified in the
+  live registry — so a combined total would be a number with no defensible
+  meaning. It is omitted for comparisons.
 - **If one group fails upstream, the whole request fails** with a `502` naming
   the failed group. A chart missing one of its two series reads as a finding
   ("nivolumab has no phase 3 trials") when it is actually an outage.
 
-### Networks
+## 9. Network design
 
 A relationship graph is not a list of rows, so it is not forced into one.
-`network_graph` populates `nodes` and `edges` instead, and leaves `data` empty:
+`network_graph` populates `nodes` and `edges` and leaves `data` empty:
 
 ```json
 {
@@ -226,102 +401,159 @@ A relationship graph is not a list of rows, so it is not forced into one.
 }
 ```
 
-Nodes are lead sponsors and their drug interventions; an edge means the sponsor
-ran at least one trial using that drug. **Edge weight is distinct trials, and a
-trial contributes at most once to a given edge** no matter how many arms repeat
-the intervention. Names are matched case-insensitively with whitespace
-collapsed, so "Merck  Sharp & Dohme" and "merck sharp & dohme" are one node.
+- Nodes are **lead sponsors** and the **interventions** they run; an edge means
+  the sponsor ran at least one trial using that intervention.
+- Intervention types included: **`DRUG` and `BIOLOGICAL`** (see below).
+  Procedures, devices, behavioural arms, and diagnostics are excluded, since
+  including them turns a sponsor-drug map into a sponsor-everything map.
+- **Edges are supported by unique NCT IDs**, and edge weight is the number of
+  distinct trials.
+- **One trial contributes at most once to a given sponsor-intervention edge**, no
+  matter how many arms repeat the intervention.
+- **High-cardinality results are capped deterministically** at
+  `NETWORK_TOP_EDGES` by weight, with ties broken on name so the same input
+  always yields the same graph. Nodes orphaned by the cap are dropped. The cap,
+  the excluded studies, and the fact that node counts span the uncapped graph are
+  all disclosed in `meta.notes`.
+- **Citations attach to edges**, because the edge is the claim being made — and
+  the excerpt quotes both halves of it (`"Lead sponsor: … | Intervention: …"`), so
+  a reader can open the record and check the relationship rather than just the
+  existence of a trial.
 
-**Citations live on edges**, because the edge is the claim being made — and the
-excerpt quotes both halves of it (`"Lead sponsor: … | Intervention: …"`), so a
-reader can open the record and check the relationship rather than just the
-existence of a trial.
+Names are matched case-insensitively with whitespace collapsed, so
+`"Merck  Sharp & Dohme"` and `"merck sharp & dohme"` are one node.
 
-Broad conditions produce thousands of pairs, so edges are capped at
-`NETWORK_TOP_EDGES` by weight, with ties broken on name so the same input always
-yields the same graph. Nodes orphaned by the cap are dropped. The cap, the
-excluded studies, and the fact that node counts span the uncapped graph are all
-disclosed in `meta.notes`.
+**Why `BIOLOGICAL` counts as a drug.** The obvious rule is to accept only
+`DRUG`. Inspecting the live registry showed that is wrong: the same molecule is
+typed both ways across studies. Across a 500-study melanoma sample, pembrolizumab
+was typed `DRUG` 29 times and `BIOLOGICAL` 18 times. Accepting only `DRUG` splits
+one node in two and drops roughly a third of the edges — for exactly the
+monoclonal antibodies these questions are usually about. Widening the set moved
+Bristol-Myers Squibb → Ipilimumab from 6 shared trials to 16 and brought
+Merck → Pembrolizumab into the top five. The set is one constant in
+[network.py](app/network.py) and the choice is named in the response notes.
 
-One judgement call worth stating: **`BIOLOGICAL` interventions count as drugs.**
-The registry uses the type interchangeably with `DRUG` for the same molecule —
-across a 500-study melanoma sample, pembrolizumab was typed `DRUG` 29 times and
-`BIOLOGICAL` 18 times. Accepting only `DRUG` splits one node in two and drops
-roughly a third of the edges for exactly the monoclonal antibodies these
-questions are usually about. The set is one constant in `network.py` and the
-choice is named in the response notes.
+## 10. Reliability / correctness
 
-### Errors
+- **Deterministic aggregation.** Every number is produced by Python over records
+  returned by the registry; the LLM never counts.
+- **Schema validation.** OpenAI strict structured outputs plus Pydantic on the
+  way in, and a typed response model on the way out.
+- **Semantic plan validation.** A separate deterministic coherence pass that a
+  well-formed but nonsensical plan cannot pass.
+- **Query sanitization.** Model-supplied free text is whitespace-collapsed and
+  stripped of stray punctuation and quotes before it enters an Essie expression.
+- **Truncation disclosure.** `truncated`, `total_available`, and an explicit note
+  whenever counts are a sample rather than registry totals.
+- **Safe provider error handling.** Upstream and LLM error bodies are classified,
+  never echoed — only the status code reaches the client.
+- **Structured unsupported-query errors.** Ambiguity produces a `422` explaining
+  why, not an answer to a question the caller did not ask.
+- **Source citations.** NCT IDs are captured *during* aggregation, so a bucket
+  and its citations cannot disagree, and the excerpt quotes the exact field value
+  that placed the study in that bucket.
 
-The service **refuses rather than guesses**. A question it cannot map with
-confidence returns a structured `422` explaining why, instead of an answer to a
-question you did not ask:
+`meta.notes` always discloses how numbers were produced: that multi-phase studies
+form their own bucket and are not double-counted; that multi-country studies are
+counted once per country, so geographic totals legitimately exceed the study
+count; how many studies were excluded from a trend for having no usable start
+date; and when the record cap truncated the analysis.
 
-```json
-{
-  "error": {
-    "code": "unsupported_query",
-    "message": "Could not determine what to group the trials by.",
-    "details": {
-      "reason": "no recognised grouping dimension (phase, status, country, sponsor, year)",
-      "supported": "..."
-    }
-  }
-}
-```
-
-| Code | Status | Meaning |
-| --- | --- | --- |
-| `unsupported_query` | 422 | Intent could not be mapped confidently |
-| `no_results` | 404 | Understood, but no trials matched |
-| `analysis_not_implemented` | 501 | Intent understood; that analysis is not built yet |
-| `upstream_error` | 502 | ClinicalTrials.gov rejected the request or was unreachable |
-
-`501` is deliberately distinct from `422`: it tells the caller their question
-was valid and the capability is simply missing, and echoes the interpreted
-intent so that is verifiable.
-
-## Source traceability
-
-Every data point carries the NCT records that produced it. This is structural
-rather than cosmetic: `nct_ids` are captured *during* aggregation, so a bucket
-and its citations cannot disagree, and the citation `excerpt` quotes the exact
-field value that placed the study in that bucket. A reader can open any cited
-record and verify the claim.
-
-## Query correctness
-
-Parameter behaviour was validated against the live API *before* the client was
-written. The headline finding: `query.intr=pembrolizumab` is only **84%**
-precise (measured over 200 studies, 32 of which never mention the drug), while
-`AREA[InterventionName]pembrolizumab` is **100%**. The client therefore uses
-Essie `filter.advanced` expressions exclusively.
-
-Full findings, including the silent `pageSize` cap at 1000 and the plain-text
-error bodies: [`docs/api-findings.md`](docs/api-findings.md).
-
-## Analytical honesty
-
-`meta.notes` always discloses how numbers were produced:
-
-- Multi-phase studies form their own bucket and are not double-counted, so
-  bucket counts sum exactly to `record_count`.
-- Multi-country studies are counted once per country, so geographic totals
-  legitimately exceed the study count — stated explicitly.
-- Studies with no usable start date are excluded from trends, and the excluded
-  count is reported.
-- When the record cap truncates, `truncated` is set and the note says the counts
-  are a sample rather than registry totals.
-
-## Tests
+## 11. Testing
 
 ```bash
 make test
 ```
 
-Runs offline against stubbed upstream responses — no network, no LLM calls.
+**151 backend tests**, all offline — no network access and no API credentials
+required.
 
-## Project layout
+| File | Tests | Covers |
+| --- | --- | --- |
+| [tests/test_planning.py](tests/test_planning.py) | 30 | Planner orchestration, semantic validation, hint merging, the failure ladder |
+| [tests/test_network.py](tests/test_network.py) | 26 | Graph construction, dedupe, the top-N cap, node counts, HTTP round trip |
+| [tests/test_comparison.py](tests/test_comparison.py) | 21 | Fan-out, shared filters, per-group truncation, partial-failure handling |
+| [tests/test_openai_client.py](tests/test_openai_client.py) | 18 | Strict-schema translation, request contract, failure classification |
+| [tests/test_planner.py](tests/test_planner.py) | 14 | Deterministic pattern planner, including its refusals |
+| [tests/test_clinicaltrials.py](tests/test_clinicaltrials.py) | 12 | Essie expression building, pagination, quoting, upstream errors |
+| [tests/test_aggregate.py](tests/test_aggregate.py) | 11 | Bucketing, multi-phase and multi-country semantics, notes |
+| [tests/test_api.py](tests/test_api.py) | 10 | End-to-end HTTP contract and error responses |
+| [tests/test_normalize.py](tests/test_normalize.py) | 9 | Raw JSON → `Study`, absent modules, date widths |
+
+Both outbound integrations are stubbed at the HTTP boundary with
+`httpx.MockTransport` — ClinicalTrials.gov and OpenAI alike — so tests exercise
+the real client code including error paths, without a network.
+
+**The Streamlit demo has no automated tests.** It was verified end-to-end with
+Streamlit's `AppTest` runner, which executes the real page and surfaces
+exceptions: all five query classes against a live backend, plus the
+unsupported-query (`422`) and backend-unreachable paths. Those runs were manual,
+not part of `make test`.
+
+## 12. Important tradeoffs / limitations
+
+- **Large result sets are sampled.** `CTGOV_MAX_RECORDS` caps the fetch at 1000
+  records per query, so a broad question analyses a subset. This is disclosed on
+  every affected response rather than hidden.
+- **`AREA[ConditionSearch]` is broader than exact condition matching**, so a
+  "breast cancer" query includes some adjacent studies. The stricter alternative
+  drops genuinely relevant trials; citations make the tradeoff auditable.
+- **The network graph is intentionally bounded** to the strongest
+  `NETWORK_TOP_EDGES` relationships, and intervention names are used as recorded
+  by the sponsor rather than resolved to a common vocabulary.
+- **The Streamlit network view is static**, not draggable — Altair gives tooltips
+  and zoom, not interactive layout.
+- **No authentication**, no rate limiting.
+- **Local demo only** — nothing is deployed.
+- **No persistent datastore**; nothing is cached or stored between requests.
+- **The LLM is used only for query interpretation.** It is not in the path of any
+  number, chart, or citation.
+
+## 13. AI tools used
+
+Claude Code was used throughout implementation for scaffolding, implementation
+assistance, test generation, debugging, and documentation. OpenAI is used at
+runtime, for query planning only.
+
+Generated and adapted code was validated rather than trusted:
+
+- review of every generated file before commit
+- deterministic unit tests, including deliberately adversarial cases
+- stubbed upstream payloads, shaped after real API responses, replayed through
+  `httpx.MockTransport` at both integration boundaries
+- live ClinicalTrials.gov verification of query semantics, precision, paging, and
+  error behaviour
+- live OpenAI planner verification against real questions
+- manual inspection of individual registry records — e.g. opening `NCT03715205`
+  to confirm its sponsor and intervention exactly matched the citation the
+  service emitted
+- end-to-end Streamlit runs against the live backend
+
+That process caught real defects. Two examples: adding a description to one enum
+field made Pydantic emit a `$ref` with a sibling keyword, which OpenAI strict
+mode rejects with an HTTP 400 — it broke every LLM plan and only surfaced because
+a live query silently degraded to the fallback planner. And the obvious
+`DRUG`-only intervention rule turned out to undercount by roughly a third once
+measured against real data.
+
+The following decisions were made deliberately by me, not delegated:
+
+- **The deterministic analytics boundary** — what the LLM is allowed to decide
+  versus what Python must compute.
+- **API query semantics** — using Essie `filter.advanced` exclusively after
+  measuring `query.*` precision.
+- **Truncation behavior** — cap and disclose rather than silently sample or
+  attempt unbounded pagination.
+- **Comparison fan-out** — independent concurrent queries per group, and failing
+  the whole request rather than returning a misleading partial chart.
+- **Citation architecture** — capturing NCT IDs during aggregation so a data
+  point and its sources are structurally inseparable.
+- **Sponsor/drug network semantics** — what a node is, what an edge means, unique
+  trials as edge weight, and the `BIOLOGICAL` inclusion.
+- **Safe fallback behavior** — a bounded failure ladder that refuses rather than
+  guesses.
+
+## 14. Repository structure
 
 ```
 app/
@@ -335,68 +567,38 @@ app/
   clinicaltrials.py   async API client + Essie expression builder
   normalize.py        raw JSON -> Study
   aggregate.py        deterministic counting -> Bucket (incl. grouped comparison)
+  network.py          sponsor-drug graph -> nodes + edges
   viz.py              chart selection + spec construction
   citations.py        NCT references per data point
-  network.py          sponsor-drug graph -> nodes + edges
   llm/
     base.py           LLMClient Protocol + strict JSON-schema translation
     openai_client.py  OpenAI structured outputs over the shared httpx pool
     prompts.py        planner system prompt + few-shot examples
     factory.py        provider selection
   schemas/            plan.py (LLM contract), study.py, api.py (public contract)
-demo/streamlit_app.py Streamlit UI; an HTTP client, imports nothing from app/
-docs/api-findings.md  verified upstream API behaviour
+demo/
+  streamlit_app.py    Streamlit UI; an HTTP client, imports nothing from app/
+docs/
+  api-findings.md     verified upstream API behaviour, with measurements
 tests/                151 tests, offline
+PLAN.md               design decisions and their rationale, recorded as built
 ```
 
-## Demo
+The demo renders each chart type with the lightest thing that works —
+`st.bar_chart` and `st.line_chart` natively; Altair only where there is no native
+equivalent (ordered horizontal bars for geo, `xOffset` for grouped comparison, a
+bipartite diagram for the network). Altair and pandas ship with Streamlit, so no
+plotting or graph library is added. Every renderer reads
+`visualization.encoding` rather than hardcoding field names, which is what makes
+the demo evidence that the contract is genuinely renderable.
 
-A Streamlit UI that consumes this API over HTTP. It exists to show that the
-response contract is genuinely renderable by a frontend that knows nothing about
-the backend, so it imports no module from `app/` and performs no filtering,
-counting, or chart selection of its own — every renderer reads
-`visualization.encoding` to learn which key holds the category, the value, and
-the series. A new analysis type emitting the same envelope renders without a
-frontend change.
+## 15. Future improvements
 
-Two terminals:
-
-```bash
-# Terminal 1 — the API
-make run
-
-# Terminal 2 — the UI, at http://localhost:8501
-streamlit run demo/streamlit_app.py
-```
-
-Point it elsewhere with `API_BASE_URL=https://host streamlit run
-demo/streamlit_app.py`; it defaults to `http://localhost:8000` and shows a live
-reachability indicator in the sidebar. `make demo` runs the same command through
-the virtualenv.
-
-| Chart type | Rendered with |
-| --- | --- |
-| `bar_chart` | `st.bar_chart` (Streamlit-native) |
-| `line_chart` | `st.line_chart` (Streamlit-native) |
-| `geo_ranking` | Altair horizontal bars, to preserve the backend's ranking |
-| `grouped_bar_chart` | Altair `xOffset`, which has no native equivalent |
-| `network_graph` | Altair bipartite diagram + edge table |
-
-Altair and pandas ship with Streamlit, so no graph or plotting library is added
-for any of this. The network is drawn bipartite — sponsors left, drugs right,
-edge width by shared-trial count — rather than force-directed: every edge
-crosses between exactly two node kinds, so the layout is both readable and
-deterministic where a force layout would be a hairball that moves on every
-render.
-
-Each response also renders the planner used, the interpreted intent, the applied
-filters, record counts, per-group truncation for comparisons, the disclosure
-notes, a capped list of the distinct source records behind the chart, and the
-raw JSON.
-
-## Status
-
-All five analyses work end to end — `distribution`, `time_trend`, `geo`,
-`comparison`, and `network` — over phase, status, year, country, sponsor, and
-sponsor type, via the OpenAI planner, with citations, disclosure notes, and the
-full fallback ladder, and all five render in the Streamlit demo.
+- Pagination beyond the current analysis cap, or background processing for
+  questions whose true match set is large.
+- Caching of upstream responses and plans.
+- Persistent query history.
+- A richer visualization client — an interactive graph, drill-down from a bar to
+  its trials.
+- More analysis operations and dimensions.
+- Production concerns: authentication, rate limiting, observability.
