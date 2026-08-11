@@ -11,7 +11,8 @@ from app.aggregate import aggregate
 from app.citations import build_citations
 from app.clinicaltrials import ClinicalTrialsClient
 from app.config import Settings
-from app.errors import NoResultsError
+from app.errors import NoResultsError, UnsupportedAnalysisError
+from app.plan_validation import IMPLEMENTED_OPERATIONS
 from app.normalize import normalize_studies
 from app.schemas.api import (
     Meta,
@@ -35,6 +36,16 @@ async def run_query(
     settings: Settings,
 ) -> QueryResponse:
     """Execute a validated plan and build the response."""
+    if plan.operation not in IMPLEMENTED_OPERATIONS:
+        # The intent was understood; the aggregator simply does not exist yet.
+        # Say so precisely rather than failing as an internal error.
+        raise UnsupportedAnalysisError(
+            f"'{plan.operation.value}' analysis is not implemented yet.",
+            operation=plan.operation.value,
+            interpreted_intent=plan.intent,
+            implemented=sorted(op.value for op in IMPLEMENTED_OPERATIONS),
+        )
+
     raw_studies, total_available = await client.search(plan.filters)
 
     if not raw_studies:

@@ -136,8 +136,14 @@ def distribution(
 
 # Registry: operation -> aggregator. Adding an analysis type is a new function
 # plus one entry here; nothing else in the pipeline changes.
+#
+# TIME_TREND and GEO are counts over a different axis rather than different
+# arithmetic, so they reuse `distribution`. They stay separate operations
+# because they select different charts and carry different caveats.
 AGGREGATORS = {
     AnalysisOp.DISTRIBUTION: distribution,
+    AnalysisOp.TIME_TREND: distribution,
+    AnalysisOp.GEO: distribution,
 }
 
 

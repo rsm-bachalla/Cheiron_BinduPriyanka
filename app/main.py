@@ -10,8 +10,9 @@ from fastapi.responses import JSONResponse
 from app.clinicaltrials import ClinicalTrialsClient
 from app.config import get_settings
 from app.errors import AppError
-from app.planner import plan_query
+from app.llm.factory import build_llm_client
 from app.pipeline import run_query
+from app.planning import plan_query
 from app.schemas.api import QueryRequest, QueryResponse
 
 logging.basicConfig(level=logging.INFO)
@@ -29,6 +30,9 @@ async def lifespan(app: FastAPI):
     ) as http_client:
         app.state.http_client = http_client
         app.state.settings = settings
+        # None when no usable credentials are configured, in which case the
+        # service runs on the deterministic planner alone.
+        app.state.llm_client = build_llm_client(settings, http_client)
         yield
 
 
@@ -68,13 +72,15 @@ async def query(request: Request, payload: QueryRequest) -> QueryResponse:
 
     # Raises UnsupportedQueryError (HTTP 422) when intent cannot be mapped
     # confidently, rather than inventing an interpretation.
-    plan = plan_query(payload.query, payload.hints)
+    outcome = await plan_query(
+        payload.query, payload.hints, llm=request.app.state.llm_client
+    )
 
     return await run_query(
         query=payload.query,
         hints=payload.hints,
-        plan=plan,
-        planner_name="rulebased",
+        plan=outcome.plan,
+        planner_name=outcome.planner,
         client=client,
         settings=settings,
     )

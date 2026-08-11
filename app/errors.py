@@ -46,6 +46,18 @@ class NoResultsError(AppError):
     code = "no_results"
 
 
+class UnsupportedAnalysisError(AppError):
+    """The query was understood, but that analysis is not implemented yet.
+
+    Distinct from `unsupported_query`: the intent was mapped successfully, so
+    the caller learns the request was valid and the capability is simply
+    missing.
+    """
+
+    status_code = 501
+    code = "analysis_not_implemented"
+
+
 class UpstreamError(AppError):
     """ClinicalTrials.gov rejected the request or was unreachable."""
 

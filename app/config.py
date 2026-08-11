@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     openai_api_key: str | None = None
     openai_model: str = "gpt-4o-mini"
     openai_base_url: str | None = None  # set for OpenAI-compatible gateways
+    llm_timeout_seconds: float = 30.0
 
 
 @lru_cache

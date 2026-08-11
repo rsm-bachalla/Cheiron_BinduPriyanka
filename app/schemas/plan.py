@@ -7,7 +7,15 @@ corrupting a ClinicalTrials.gov query.
 
 from enum import Enum
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
+
+# Punctuation that only appears in a filter value when JSON/prompt formatting
+# has bled into the extracted entity. Observed live: a model returned
+# `pembrolizumab},` for the drug field. ClinicalTrials.gov tokenised the junk
+# away and still returned the right studies, so the corrupted filter was
+# invisible in the results and visible only in the echoed meta -- exactly the
+# kind of defect that must be caught structurally rather than by eye.
+_STRAY_CHARS = ' \t\n"\'{}[](),;:.'
 
 
 class AnalysisOp(str, Enum):
@@ -76,6 +84,21 @@ class TrialFilters(BaseModel):
     status: TrialStatus | None = None
     start_year: int | None = Field(None, ge=1900, le=2100)
     end_year: int | None = Field(None, ge=1900, le=2100)
+
+    @field_validator("drug", "condition", "sponsor", "country", mode="before")
+    @classmethod
+    def _clean_free_text(cls, value: object) -> object:
+        """Strip stray punctuation and whitespace from model-supplied values.
+
+        These four fields are the only free-text filters -- everything else is
+        enum-constrained -- so they are the one place prompt artifacts can reach
+        the upstream query. Values that clean up to nothing become None rather
+        than an empty phrase match.
+        """
+        if not isinstance(value, str):
+            return value
+        cleaned = " ".join(value.split()).strip(_STRAY_CHARS)
+        return cleaned or None
 
     @model_validator(mode="after")
     def _check_year_order(self) -> "TrialFilters":

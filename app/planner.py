@@ -131,7 +131,7 @@ def _detect_years(text: str) -> tuple[int | None, int | None]:
     return min(years), max(years)
 
 
-def _apply_hints(filters: TrialFilters, hints: QueryHints | None) -> TrialFilters:
+def apply_hints(filters: TrialFilters, hints: QueryHints | None) -> TrialFilters:
     """Overlay caller hints. A set hint always wins over an inferred value."""
     if hints is None:
         return filters
@@ -166,7 +166,7 @@ def plan_query(query: str, hints: QueryHints | None = None) -> QueryPlan:
         start_year=start_year,
         end_year=end_year,
     )
-    filters = _apply_hints(filters, hints)
+    filters = apply_hints(filters, hints)
 
     # Hints can supply the grouping subject even when the wording is unclear.
     if dimension is None and hints is not None and hints.trial_phase is None:

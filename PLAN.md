@@ -4,8 +4,9 @@ An AI-enabled backend service that answers natural-language questions about clin
 trials using the ClinicalTrials.gov API and returns structured, frontend-renderable
 visualization specifications.
 
-**Status:** plan approved, implementation not yet started.
+**Status:** Steps 1–3 complete (deterministic pipeline + OpenAI planner). Steps 4–5 outstanding.
 **Stack:** Python · FastAPI · Pydantic v2 · httpx (async) · pytest
+**LLM provider:** OpenAI only (structured outputs). See §4.2.
 
 ---
 
@@ -76,9 +77,38 @@ class QueryPlan(BaseModel):
 Enums everywhere, so a hallucinated `"Phase 7"` fails validation rather than silently
 corrupting a query.
 
-**Failure ladder:** validation error → one repair retry with the error text appended →
-rule-based planner fallback. The service therefore always returns a useful answer, and
-runs end-to-end with no API credentials at all.
+**Planner flow (implemented):**
+
+```
+query → OpenAI structured output → Pydantic validation
+      → semantic validation → merge hints → QueryPlan
+```
+
+**Failure ladder, bounded at one extra call:**
+
+| Failure | Response |
+| --- | --- |
+| Schema/validation mismatch (repairable) | One repair retry, naming the exact error |
+| Auth / network / rate limit (not repairable) | No retry — straight to fallback |
+| Semantically incoherent plan | One repair, unless re-prompting cannot help |
+| Fallback, query matches a supported pattern | Deterministic planner answers it |
+| Fallback, query ambiguous | Structured `422` refusal |
+
+The service does **not** guarantee an answer to every query. When intent cannot be
+mapped confidently it returns a structured refusal rather than guessing — and the
+refusal distinguishes "we cannot parse this" from "the provider was down".
+
+**Hint precedence:** hints are merged *after* validation, so an explicit caller filter
+always overrides the model's extraction.
+
+**Semantic validation is deterministic and lives outside the LLM** (`plan_validation.py`):
+`time_trend` must group by year, `geo` by country, `network` by sponsor; `comparison`
+needs ≥2 groups and no other operation may carry them; year ranges must be ordered; a
+plan with no filters at all is refused rather than scanning the registry.
+
+**Free-text filter values are sanitised.** `drug`, `condition`, `sponsor`, and `country`
+are the only unconstrained fields, so they are the one place prompt artifacts can reach
+the upstream query — see §9.
 
 ---
 
@@ -139,18 +169,30 @@ Single structured call. No agent loop, no tool-calling ping-pong, no framework. 
 "agentic" surface is one schema-constrained generation with a validation/repair/fallback
 ladder around it.
 
-**4.2 — No LangChain / LangGraph.**
+**4.2 — OpenAI only, behind a one-method Protocol. No LangChain / LangGraph.**
 The entire agentic surface is one function call. A framework would add a dependency, an
 indirection layer, and its own prompt templating for zero benefit. Provider abstraction
 is a `Protocol` with one method:
 
 ```python
-def structured(schema: type[BaseModel], system: str, user: str) -> BaseModel: ...
+async def structured(schema: type[BaseModel], system: str, user: str, *,
+                     repair_hint: str | None = None) -> BaseModel: ...
 ```
 
-Anthropic implements it via forced tool-use; OpenAI-compatible via
-`response_format={"type": "json_schema"}`. Swapping providers is `LLM_PROVIDER=openai`
-in `.env`. Both providers are first-class in this build.
+OpenAI implements it via `response_format={"type": "json_schema", "strict": true}`.
+**Only OpenAI is implemented** — the assignment supplies an OpenAI key, and completing
+and validating the product beats breadth of provider support. Another provider would be
+one new adapter plus one branch in `llm/factory.py`; nothing else changes.
+
+The adapter calls the REST endpoint over the shared `httpx` pool rather than the vendor
+SDK: the surface used is a single POST, so going direct keeps dependencies small and
+makes the boundary trivial to stub with `MockTransport`.
+
+**Strict-mode schema translation.** OpenAI strict mode requires every object to mark all
+properties required with `additionalProperties: false`, and rejects several keywords
+Pydantic emits from `Field` constraints (`minimum`, `maximum`, …). `to_strict_schema()`
+performs that translation; the dropped constraints are re-enforced by Pydantic on the way
+back in and by semantic validation after that.
 
 **4.3 — Every aggregator emits the same `Bucket` shape.**
 `{label, value, group?, nct_ids: list[str]}` — including `network`, whose buckets are
@@ -259,11 +301,11 @@ Each step ends with something runnable.
 
 | Step | Deliverable | Runnable at end of step |
 | --- | --- | --- |
-| **1. Scaffold** | `pyproject.toml`, config, folder structure, `.env.example`, `GET /health`. Verify deps resolve on Python 3.14 before building on them. | Health endpoint |
-| **2. Deterministic spine** *(no LLM)* | Trials client → normalizer → `distribution` aggregator → viz builder → citations, wired to `POST /query` via the rule-based planner. | Full demo answering the breast-cancer-by-phase query with real citations, zero LLM involvement |
-| **3. The agent** | LLM interpreter behind the Protocol; Anthropic + OpenAI adapters; validation → repair → fallback ladder; stub-client tests. | Arbitrary natural-language queries |
-| **4. Coverage** | Remaining aggregators: `time_trend`, `comparison` (concurrent fan-out), `geo`, `network`. Spine unchanged. | All five example queries pass |
-| **5. Tests + docs** | Recorded fixtures for offline tests, unit tests per layer, end-to-end API test, README with architecture diagram + curl examples, `make run`. | Submission-ready |
+| **1. Scaffold** ✅ | `pyproject.toml`, config, folder structure, `.env.example`, `GET /health`. Deps verified on Python 3.14. | Health endpoint |
+| **2. Deterministic spine** ✅ *(no LLM)* | Trials client → normalizer → `distribution` aggregator → viz builder → citations, wired to `POST /query`. | Breast-cancer-by-phase query with real citations, zero LLM involvement |
+| **3. The agent** ✅ | OpenAI structured-output planner behind the Protocol; semantic validation; repair → fallback → refusal ladder; stub-client tests. | Arbitrary natural-language queries |
+| **4. Coverage** | `comparison` (concurrent fan-out) and `network` (nodes + edges) aggregators. `time_trend` and `geo` are already live — they are counts over a different axis, so they reuse `distribution`. | All five example queries pass |
+| **5. Tests + docs + Streamlit demo** | README architecture diagram, `demo/streamlit_app.py` as a pure HTTP consumer of the API contract. | Submission-ready |
 
 Step 2 is deliberately LLM-free: the deterministic core is proven correct **before** any
 nondeterminism enters the system, and there is a working demo early on a 24-hour clock.
@@ -291,7 +333,9 @@ than a script.
 | **Essie query syntax** — ClinicalTrials.gov `query.*` params are not naive keyword fields; term stuffing returns junk | Build the param mapping against real responses and assert on it in tests. This is the real accuracy risk, more than the LLM. |
 | **Sponsor/drug network explodes** | Cap to top-N sponsors × top-N interventions by trial count; state the cap in `meta.notes`. |
 | **LLM emits an invalid or nonsensical plan** | Enum-constrained schema → validation → one repair retry → rule-based fallback. Never propagates to the query layer. |
-| **Missing or partial start dates** | `dates.py` handles `YYYY`, `YYYY-MM`, `YYYY-MM-DD`; undated trials are excluded from time trends and counted in a `meta.notes` disclosure. |
+| **Missing or partial start dates** | Handled in `normalize.py` for `YYYY`, `YYYY-MM`, `YYYY-MM-DD`; undated trials are excluded from time trends and counted in a `meta.notes` disclosure. |
+| **LLM prompt artifacts leaking into filter values** *(observed live, now fixed)* | A model returned `pembrolizumab},` as the drug name. ClinicalTrials.gov tokenised the junk away and returned the **correct** studies, so the corrupted filter was invisible in the data and visible only in the echoed meta. Fixed on both sides: `TrialFilters` strips stray punctuation from all four free-text fields, and the few-shot examples are pretty-printed rather than inline JSON. Pinned by regression tests. |
+| **Provider error bodies leaking to API clients** *(observed live, now fixed)* | OpenAI's 401 body echoes a partially masked API key, and it was reaching `error.details.llm_error`. Only the status code now crosses the boundary; the body is logged server-side. |
 
 ---
 

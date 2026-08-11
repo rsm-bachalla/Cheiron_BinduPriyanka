@@ -42,11 +42,10 @@ Stages 2–6 are pure functions over typed inputs and are individually testable.
 
 ## Quick start
 
-No credentials are required to run the service.
-
 ```bash
 make install
-make run          # http://localhost:8000/docs
+cp .env.example .env     # add your OPENAI_API_KEY
+make run                 # http://localhost:8000/docs
 ```
 
 ```bash
@@ -57,13 +56,53 @@ curl -X POST localhost:8000/query \
 
 ### Configuration
 
-```bash
-cp .env.example .env
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `LLM_PROVIDER` | `openai` | `openai`, or `rulebased` to disable the LLM |
+| `OPENAI_API_KEY` | — | Required for open-ended questions |
+| `OPENAI_MODEL` | `gpt-4o-mini` | Any structured-output-capable model |
+| `OPENAI_BASE_URL` | — | Set for an OpenAI-compatible gateway |
+| `CTGOV_MAX_RECORDS` | `1000` | Per-query fetch cap; truncation is disclosed |
+| `CITATIONS_PER_POINT` | `3` | Source records attached to each data point |
+
+**The service runs without credentials.** With no key it falls back to a
+deterministic pattern planner that handles a narrow set of phrasings and refuses
+everything else. The full test suite also runs with no key and no network.
+
+## The planner
+
+```
+query → OpenAI structured output → Pydantic validation
+      → semantic validation → merge hints → QueryPlan
 ```
 
-The deterministic planner recognises a narrow set of phrasings and needs no
-credentials. Set `OPENAI_API_KEY` and `LLM_PROVIDER=openai` for open-ended
-natural-language questions.
+The model returns a `QueryPlan` and nothing else — enum-constrained `operation`
+and `dimension`, typed filters, comparison groups, a title. It never sees study
+data, never counts, and never produces citations.
+
+**Semantic validation is deterministic and lives outside the LLM.** Schema
+validation proves a plan is well-formed; it cannot prove it is coherent. A
+`time_trend` grouped by `sponsor` type-checks and is still nonsense. So
+`plan_validation.py` independently enforces: trends group by year, geo by
+country, network by sponsor; comparisons need ≥2 groups and no other operation
+may carry them; year ranges must be ordered; a plan with no filters at all is
+refused rather than scanning the whole registry.
+
+**The failure ladder is bounded at one extra call:**
+
+| Failure | Response |
+| --- | --- |
+| Schema mismatch or incoherent plan | One repair retry, naming the exact error |
+| Auth / network / rate limit | No retry — re-prompting cannot help |
+| Fallback + query matches a known pattern | Deterministic planner answers it |
+| Fallback + ambiguous query | Structured `422` refusal |
+
+**Hints override the model.** They are merged after validation, so
+`{"query": "Show recruiting lung cancer trials", "hints": {"status": "COMPLETED"}}`
+yields `COMPLETED`.
+
+Swapping providers means writing one adapter satisfying the `LLMClient`
+Protocol and adding a branch to `llm/factory.py`. Only OpenAI is implemented.
 
 ## API
 
@@ -148,7 +187,12 @@ question you did not ask:
 | --- | --- | --- |
 | `unsupported_query` | 422 | Intent could not be mapped confidently |
 | `no_results` | 404 | Understood, but no trials matched |
+| `analysis_not_implemented` | 501 | Intent understood; that analysis is not built yet |
 | `upstream_error` | 502 | ClinicalTrials.gov rejected the request or was unreachable |
+
+`501` is deliberately distinct from `422`: it tells the caller their question
+was valid and the capability is simply missing, and echoes the interpreted
+intent so that is verifiable.
 
 ## Source traceability
 
@@ -197,23 +241,31 @@ app/
   main.py             FastAPI app, lifespan, error contract
   config.py           settings
   errors.py           domain exceptions -> structured HTTP responses
-  planner.py          NL -> QueryPlan (deterministic patterns; refuses when unsure)
-  pipeline.py         orchestration
+  planning.py         planner orchestration: LLM -> validate -> hints -> fallback
+  planner.py          deterministic pattern planner (fallback; refuses when unsure)
+  plan_validation.py  semantic coherence checks, independent of the LLM
+  pipeline.py         plan -> fetch -> normalize -> aggregate -> visualize -> cite
   clinicaltrials.py   async API client + Essie expression builder
   normalize.py        raw JSON -> Study
   aggregate.py        deterministic counting -> Bucket
   viz.py              chart selection + spec construction
   citations.py        NCT references per data point
+  llm/
+    base.py           LLMClient Protocol + strict JSON-schema translation
+    openai_client.py  OpenAI structured outputs over the shared httpx pool
+    prompts.py        planner system prompt + few-shot examples
+    factory.py        provider selection
   schemas/            plan.py (LLM contract), study.py, api.py (public contract)
 docs/api-findings.md  verified upstream API behaviour
-tests/
+tests/                103 tests, offline
 ```
 
 ## Status
 
-Implemented: deterministic vertical slice — distribution analyses over phase,
-status, country, sponsor, sponsor type, and year, with citations and full
-disclosure notes.
+**Working:** `distribution`, `time_trend`, and `geo` analyses over phase, status,
+year, country, sponsor, and sponsor type — via the OpenAI planner, with
+citations, disclosure notes, and the full fallback ladder.
 
-Next: OpenAI structured-output planner, then time-trend / comparison / network
-analyses, then the Streamlit demo.
+**Not yet built:** `comparison` (concurrent per-group fan-out) and `network`
+(nodes + edges) aggregators. The planner produces valid plans for both; the
+pipeline returns a `501` naming the interpreted intent. Streamlit demo follows.
