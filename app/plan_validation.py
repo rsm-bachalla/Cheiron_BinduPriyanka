@@ -35,13 +35,16 @@ ALLOWED_DIMENSIONS: dict[AnalysisOp, set[Dimension]] = {
     },
 }
 
-# Operations with an aggregator wired up. The planner may legitimately produce
-# the others; the pipeline reports them as not-yet-supported rather than failing
-# with an unhandled error.
+# Operations with an aggregator wired up. Every operation the planner can emit
+# is currently implemented, but the guard stays: adding an enum member without
+# an aggregator must yield a clean 501 naming the interpreted intent, not an
+# unhandled error.
 IMPLEMENTED_OPERATIONS = {
     AnalysisOp.DISTRIBUTION,
     AnalysisOp.TIME_TREND,
     AnalysisOp.GEO,
+    AnalysisOp.COMPARISON,
+    AnalysisOp.NETWORK,
 }
 
 
@@ -65,10 +68,20 @@ def validate_plan(plan: QueryPlan) -> None:
             f"'{plan.dimension.value}'; expected one of: {expected}"
         )
 
-    if plan.operation is AnalysisOp.COMPARISON and len(plan.comparison_groups) < 2:
-        raise PlanValidationError(
-            "comparison requires at least two comparison_groups"
-        )
+    if plan.operation is AnalysisOp.COMPARISON:
+        if len(plan.comparison_groups) < 2:
+            raise PlanValidationError(
+                "comparison requires at least two distinct comparison_groups"
+            )
+        # The fan-out overwrites this field per group, so a plan that also pins
+        # it as a shared filter is asking for two different things at once.
+        pinned = getattr(plan.filters, plan.comparison_field.value)
+        if pinned is not None:
+            raise PlanValidationError(
+                f"comparison_field is '{plan.comparison_field.value}' but "
+                f"filters.{plan.comparison_field.value} is also set to "
+                f"'{pinned}'; the groups supply that value"
+            )
 
     if plan.operation is not AnalysisOp.COMPARISON and plan.comparison_groups:
         raise PlanValidationError(

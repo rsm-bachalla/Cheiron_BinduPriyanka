@@ -84,29 +84,23 @@ def _sort_buckets(buckets: list[Bucket], dimension: Dimension) -> list[Bucket]:
     return sorted(buckets, key=lambda b: (-b.value, b.label))
 
 
-def distribution(
-    studies: list[Study], dimension: Dimension, top_n: int | None = None
-) -> AggregationResult:
-    """Count studies per distinct value of `dimension`."""
-    counts: dict[str, list[str]] = defaultdict(list)
-    for study in studies:
-        for label in _labels_for(study, dimension):
-            counts[label].append(study.nct_id)
+def _dimension_notes(
+    studies: list[Study], labels: list[str], dimension: Dimension
+) -> list[str]:
+    """Caveats implied by how this dimension buckets studies.
 
-    buckets = [
-        Bucket(label=label, value=len(ids), nct_ids=ids) for label, ids in counts.items()
-    ]
-    buckets = _sort_buckets(buckets, dimension)
-
+    Shared by every count-based aggregator so a comparison discloses exactly the
+    same arithmetic as the equivalent single-series distribution.
+    """
     notes: list[str] = []
 
     if dimension is Dimension.PHASE:
-        if any(b.label == NO_PHASE_LABEL for b in buckets):
+        if NO_PHASE_LABEL in labels:
             notes.append(
                 f"'{NO_PHASE_LABEL}' covers studies with no phase recorded "
                 "(typically observational); it is distinct from 'Not Applicable'."
             )
-        if any("/" in b.label for b in buckets):
+        if any("/" in label for label in labels):
             notes.append(
                 "Studies registered under multiple phases (e.g. 'Phase 1/Phase 2') "
                 "form their own bucket and are not counted under each phase, so "
@@ -127,9 +121,100 @@ def distribution(
                 "excluded from the trend."
             )
 
+    return notes
+
+
+def distribution(
+    studies: list[Study], dimension: Dimension, top_n: int | None = None
+) -> AggregationResult:
+    """Count studies per distinct value of `dimension`."""
+    counts: dict[str, list[str]] = defaultdict(list)
+    for study in studies:
+        for label in _labels_for(study, dimension):
+            counts[label].append(study.nct_id)
+
+    buckets = [
+        Bucket(label=label, value=len(ids), nct_ids=ids) for label, ids in counts.items()
+    ]
+    buckets = _sort_buckets(buckets, dimension)
+
+    notes = _dimension_notes(studies, [b.label for b in buckets], dimension)
+
     if top_n is not None and len(buckets) > top_n:
         notes.append(f"Showing the top {top_n} of {len(buckets)} values by study count.")
         buckets = buckets[:top_n]
+
+    return AggregationResult(buckets=buckets, notes=notes)
+
+
+def comparison(
+    studies: list[Study],
+    dimension: Dimension,
+    groups: list[str] | None = None,
+    top_n: int | None = None,
+) -> AggregationResult:
+    """Count studies per `dimension` value, held separately per comparison group.
+
+    Studies arrive already tagged with the group whose upstream query returned
+    them (see the fan-out in `pipeline`), so this is the same counting as
+    `distribution` partitioned by that tag -- no membership is inferred here.
+
+    The output is dense: every (label, group) pair is emitted, with zeros where a
+    group has no studies for a label. A grouped bar chart needs the absence to be
+    a visible zero rather than a missing row.
+    """
+    groups = groups or sorted({s.group for s in studies if s.group})
+
+    per_group: dict[str, dict[str, list[str]]] = {g: defaultdict(list) for g in groups}
+    for study in studies:
+        counts = per_group.get(study.group or "")
+        if counts is None:
+            continue
+        for label in _labels_for(study, dimension):
+            counts[label].append(study.nct_id)
+
+    # Label order comes from the combined totals, so both series share one axis
+    # ordered the same way a single-series chart would be.
+    totals: dict[str, int] = defaultdict(int)
+    for counts in per_group.values():
+        for label, ids in counts.items():
+            totals[label] += len(ids)
+
+    ordered = _sort_buckets(
+        [Bucket(label=label, value=value) for label, value in totals.items()], dimension
+    )
+    labels = [bucket.label for bucket in ordered]
+
+    notes = _dimension_notes(studies, labels, dimension)
+    notes.append(
+        "Each group was queried against ClinicalTrials.gov independently; a "
+        "trial matching more than one group is counted once in each."
+    )
+
+    # The cap applies to categories, not series, so groups stay comparable.
+    if top_n is not None and len(labels) > top_n:
+        notes.append(
+            f"Showing the top {top_n} of {len(labels)} values by combined study count."
+        )
+        labels = labels[:top_n]
+
+    empty = [g for g in groups if not per_group[g]]
+    if empty:
+        notes.append(
+            f"No trials were returned for: {', '.join(empty)}. "
+            "These groups are shown as zero rather than omitted."
+        )
+
+    buckets = [
+        Bucket(
+            label=label,
+            value=len(per_group[group].get(label, [])),
+            nct_ids=per_group[group].get(label, []),
+            group=group,
+        )
+        for label in labels
+        for group in groups
+    ]
 
     return AggregationResult(buckets=buckets, notes=notes)
 
@@ -140,10 +225,15 @@ def distribution(
 # TIME_TREND and GEO are counts over a different axis rather than different
 # arithmetic, so they reuse `distribution`. They stay separate operations
 # because they select different charts and carry different caveats.
+#
+# NETWORK is deliberately absent: it produces nodes and edges rather than
+# buckets, so it lives in `network.py` with its own result type instead of being
+# forced through this signature.
 AGGREGATORS = {
     AnalysisOp.DISTRIBUTION: distribution,
     AnalysisOp.TIME_TREND: distribution,
     AnalysisOp.GEO: distribution,
+    AnalysisOp.COMPARISON: comparison,
 }
 
 

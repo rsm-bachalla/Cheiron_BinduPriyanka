@@ -79,6 +79,14 @@ def to_strict_schema(model: type[BaseModel]) -> dict[str, Any]:
 
         cleaned = {k: walk(v) for k, v in node.items() if k not in _UNSUPPORTED_KEYWORDS}
 
+        # A `$ref` must stand alone: strict mode rejects it outright if it has
+        # any sibling keyword. Pydantic produces exactly that shape whenever an
+        # enum or nested-model field also carries a Field(description=...), so
+        # the siblings are dropped rather than the description being banned at
+        # the model. The prompt conveys field meaning; the schema conveys shape.
+        if "$ref" in cleaned and len(cleaned) > 1:
+            cleaned = {"$ref": cleaned["$ref"]}
+
         if cleaned.get("type") == "object" and "properties" in cleaned:
             cleaned["additionalProperties"] = False
             # Strict mode has no notion of an omitted key; optionality is

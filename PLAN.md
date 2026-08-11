@@ -194,11 +194,27 @@ Pydantic emits from `Field` constraints (`minimum`, `maximum`, …). `to_strict_
 performs that translation; the dropped constraints are re-enforced by Pydantic on the way
 back in and by semantic validation after that.
 
-**4.3 — Every aggregator emits the same `Bucket` shape.**
-`{label, value, group?, nct_ids: list[str]}` — including `network`, whose buckets are
-edges. One uniform shape means one citation code path and one viz-building code path
-instead of five. Adding a sixth analysis type later is a new function plus one registry
+**4.3 — Bucket-shaped analyses share one code path; `network` does not.**
+`distribution`, `time_trend`, `geo`, and `comparison` all emit
+`{label, value, group?, nct_ids: list[str]}`, so there is one citation path and one
+viz-building path for four operations, and a fifth is a new function plus one registry
 entry.
+
+`network` was originally planned to share that shape, with edges as buckets. **It does
+not, and the plan was wrong.** A relationship is a claim about *two* endpoints; flattening
+it into a single `label` would have forced the frontend to parse identity back out of a
+string, and pushed cardinality capping into a representation with no concept of an
+orphaned node. It lives in `network.py` with explicit `nodes`/`edges` — approval
+adjustment #3 anticipated exactly this. Citations attach to edges, since the edge is the
+claim being made.
+
+**4.3b — Comparison fans out; it does not filter locally.**
+Each group is its own upstream query, run concurrently via `asyncio.gather`, with all
+shared filters applied to each. One broad search plus local group assignment would mean
+re-implementing Essie matching in Python and getting it subtly wrong. Any group failing
+fails the whole request: a chart missing one series reads as a finding, not an outage.
+Per-group `record_count`/`total_available`/`truncated` are reported separately, and the
+combined `total_available` is null because group match sets legitimately overlap.
 
 **4.4 — Citations are a byproduct of aggregation, not a bolted-on step.**
 `nct_ids` ride inside the bucket from the moment it is created, so every data point
@@ -304,7 +320,7 @@ Each step ends with something runnable.
 | **1. Scaffold** ✅ | `pyproject.toml`, config, folder structure, `.env.example`, `GET /health`. Deps verified on Python 3.14. | Health endpoint |
 | **2. Deterministic spine** ✅ *(no LLM)* | Trials client → normalizer → `distribution` aggregator → viz builder → citations, wired to `POST /query`. | Breast-cancer-by-phase query with real citations, zero LLM involvement |
 | **3. The agent** ✅ | OpenAI structured-output planner behind the Protocol; semantic validation; repair → fallback → refusal ladder; stub-client tests. | Arbitrary natural-language queries |
-| **4. Coverage** | `comparison` (concurrent fan-out) and `network` (nodes + edges) aggregators. `time_trend` and `geo` are already live — they are counts over a different axis, so they reuse `distribution`. | All five example queries pass |
+| **4. Coverage** ✅ | `comparison` (concurrent fan-out, per-group meta) and `network` (nodes + edges, top-N cap). `time_trend` and `geo` were already live — counts over a different axis, so they reuse `distribution`. | All five example queries pass |
 | **5. Tests + docs + Streamlit demo** | README architecture diagram, `demo/streamlit_app.py` as a pure HTTP consumer of the API contract. | Submission-ready |
 
 Step 2 is deliberately LLM-free: the deterministic core is proven correct **before** any
@@ -331,7 +347,9 @@ than a script.
 | --- | --- |
 | **Python 3.14.5** is newer than much of the ecosystem | Pydantic v2 / httpx / FastAPI ship 3.14 wheels. Pin conservatively and verify the install resolves as the *first* implementation step; flag rather than silently swap libraries. |
 | **Essie query syntax** — ClinicalTrials.gov `query.*` params are not naive keyword fields; term stuffing returns junk | Build the param mapping against real responses and assert on it in tests. This is the real accuracy risk, more than the LLM. |
-| **Sponsor/drug network explodes** | Cap to top-N sponsors × top-N interventions by trial count; state the cap in `meta.notes`. |
+| **Sponsor/drug network explodes** | ✅ Cap to top-N *edges* by weight (`NETWORK_TOP_EDGES`, default 40), ties broken on name so the cap is reproducible; orphaned nodes dropped; cap stated in `meta.notes`. Melanoma yields 1283 pairs before capping. |
+| **Registry types the same drug two ways** | ✅ Found live: pembrolizumab is typed `DRUG` 29× and `BIOLOGICAL` 18× across a 500-study melanoma sample. `DRUG`-only would split one node in two and drop ~⅓ of the edges for the antibodies these questions are about. Both types are accepted; the choice is one constant and is disclosed in `meta.notes`. |
+| **`$ref` with sibling keywords breaks strict mode** | ✅ Found live (HTTP 400): Pydantic emits `{"$ref": …, "description": …}` for an enum field carrying a `Field(description=…)`, which OpenAI strict mode rejects outright. `to_strict_schema()` now strips `$ref` siblings; regression-tested. The fallback ladder caught it correctly at the time, which is exactly why it surfaced as a rule-based refusal rather than a crash. |
 | **LLM emits an invalid or nonsensical plan** | Enum-constrained schema → validation → one repair retry → rule-based fallback. Never propagates to the query layer. |
 | **Missing or partial start dates** | Handled in `normalize.py` for `YYYY`, `YYYY-MM`, `YYYY-MM-DD`; undated trials are excluded from time trends and counted in a `meta.notes` disclosure. |
 | **LLM prompt artifacts leaking into filter values** *(observed live, now fixed)* | A model returned `pembrolizumab},` as the drug name. ClinicalTrials.gov tokenised the junk away and returned the **correct** studies, so the corrupted filter was invisible in the data and visible only in the echoed meta. Fixed on both sides: `TrialFilters` strips stray punctuation from all four free-text fields, and the few-shot examples are pretty-printed rather than inline JSON. Pinned by regression tests. |

@@ -5,7 +5,10 @@ not an LLM judgement call -- the appropriate chart for "count by category" is
 knowable without a model.
 """
 
+from dataclasses import asdict
+
 from app.aggregate import Bucket
+from app.network import Edge, Node
 from app.schemas.api import (
     AxisEncoding,
     ChartType,
@@ -36,6 +39,8 @@ DIMENSION_TITLE = {
 }
 
 VALUE_FIELD = "trial_count"
+# The row key identifying which comparison series a point belongs to.
+SERIES_FIELD = "group"
 
 
 def select_chart_type(operation: AnalysisOp, dimension: Dimension) -> ChartType:
@@ -59,9 +64,14 @@ def build_visualization(
     dimension: Dimension,
     title: str,
     buckets: list[Bucket],
-    citations_by_label: dict[str, list[Citation]],
+    citations: list[list[Citation]],
 ) -> Visualization:
-    """Assemble the frontend-facing spec from aggregated buckets."""
+    """Assemble the frontend-facing spec from aggregated buckets.
+
+    `citations` is positional -- one list per bucket, in bucket order. Keying by
+    label would collide across comparison series, where the same label appears
+    once per group.
+    """
     x_field = DIMENSION_FIELD[dimension]
     x_title = DIMENSION_TITLE[dimension]
     chart_type = select_chart_type(operation, dimension)
@@ -69,23 +79,21 @@ def build_visualization(
     x_type = "temporal" if dimension is Dimension.YEAR else "nominal"
 
     rows: list[dict] = []
-    for bucket in buckets:
+    for bucket, bucket_citations in zip(buckets, citations, strict=True):
         row: dict = {
             x_field: bucket.label,
             VALUE_FIELD: bucket.value,
-            "citations": [
-                c.model_dump() for c in citations_by_label.get(bucket.label, [])
-            ],
+            "citations": [c.model_dump() for c in bucket_citations],
         }
         if bucket.group is not None:
-            row["series"] = bucket.group
+            row[SERIES_FIELD] = bucket.group
         rows.append(row)
 
     encoding = Encoding(
         x=AxisEncoding(field=x_field, type=x_type, title=x_title),
         y=AxisEncoding(field=VALUE_FIELD, type="quantitative", title="Number of Trials"),
         series=(
-            AxisEncoding(field="series", type="nominal", title="Group")
+            AxisEncoding(field=SERIES_FIELD, type="nominal", title="Group")
             if any(b.group is not None for b in buckets)
             else None
         ),
@@ -93,4 +101,41 @@ def build_visualization(
 
     return Visualization(
         type=chart_type, title=title, encoding=encoding, data=rows
+    )
+
+
+def build_network_visualization(
+    *,
+    title: str,
+    nodes: list[Node],
+    edges: list[Edge],
+    citations: list[list[Citation]],
+) -> Visualization:
+    """Assemble a node/edge spec.
+
+    A relationship graph has no x/y rows, so forcing it into `data` would leave
+    the frontend reconstructing the topology. `nodes` and `edges` are explicit
+    instead, with citations on the edges -- the edge is the claim being made.
+    """
+    return Visualization(
+        type="network_graph",
+        title=title,
+        # `trial_count` means the same thing on a node and on an edge, so one
+        # quantitative encoding describes both.
+        encoding=Encoding(
+            y=AxisEncoding(
+                field=VALUE_FIELD, type="quantitative", title="Number of Trials"
+            )
+        ),
+        data=[],
+        nodes=[asdict(node) for node in nodes],
+        edges=[
+            {
+                "source": edge.source,
+                "target": edge.target,
+                VALUE_FIELD: edge.trial_count,
+                "citations": [c.model_dump() for c in edge_citations],
+            }
+            for edge, edge_citations in zip(edges, citations, strict=True)
+        ],
     )

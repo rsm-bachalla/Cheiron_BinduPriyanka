@@ -6,6 +6,7 @@ to a bucket, and the LLM never touches this path at all.
 """
 
 from app.aggregate import Bucket
+from app.network import Edge
 from app.schemas.api import Citation
 from app.schemas.plan import Dimension
 from app.schemas.study import Study
@@ -56,6 +57,35 @@ def build_citations(
                 url=study.url,
                 title=study.brief_title,
                 excerpt=_excerpt(study, dimension),
+            )
+        )
+    return citations
+
+
+def build_edge_citations(
+    edge: Edge, studies_by_id: dict[str, Study], limit: int
+) -> list[Citation]:
+    """Render citations for one sponsor-drug edge.
+
+    A network edge is a claim about two fields at once, so the excerpt quotes
+    both: a reader can open the record and confirm the sponsor *and* the drug
+    that produced the link. Edges are the traceability path for a network -- the
+    nodes are just their endpoints.
+    """
+    citations: list[Citation] = []
+    for nct_id in edge.nct_ids[:limit]:
+        study = studies_by_id.get(nct_id)
+        if study is None:
+            continue
+        citations.append(
+            Citation(
+                nct_id=study.nct_id,
+                url=study.url,
+                title=study.brief_title,
+                excerpt=(
+                    f"Lead sponsor: {study.lead_sponsor or 'not recorded'} | "
+                    f"Intervention: {edge.target}"
+                ),
             )
         )
     return citations

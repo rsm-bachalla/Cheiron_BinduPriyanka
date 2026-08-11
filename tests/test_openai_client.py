@@ -70,6 +70,24 @@ class TestStrictSchema:
         assert "minimum" not in raw
         assert "maximum" not in raw
 
+    def test_refs_have_no_sibling_keywords(self):
+        # Strict mode rejects a $ref with any sibling. Pydantic emits exactly
+        # that for an enum field carrying a description -- which produced a live
+        # HTTP 400 the moment such a field was added.
+        schema = to_strict_schema(QueryPlan)
+
+        def check(node):
+            if isinstance(node, dict):
+                if "$ref" in node:
+                    assert set(node) == {"$ref"}, f"$ref has siblings: {set(node)}"
+                for value in node.values():
+                    check(value)
+            elif isinstance(node, list):
+                for item in node:
+                    check(item)
+
+        check(schema)
+
     def test_enums_survive_conversion(self):
         # The enum constraint is the whole point; losing it would let the model
         # return arbitrary operations.

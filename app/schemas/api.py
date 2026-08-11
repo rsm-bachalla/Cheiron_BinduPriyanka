@@ -83,6 +83,21 @@ class QueryInterpretation(BaseModel):
     planner: str = Field(..., description="Which planner produced this: rulebased | openai")
 
 
+class GroupMeta(BaseModel):
+    """Per-group provenance for a comparison.
+
+    Each group is a separate upstream query, so each has its own match count and
+    its own truncation state. Reporting them separately is what keeps a
+    comparison honest: one group capped at 1000 and another returning 40 is not
+    a like-for-like chart, and the caller can see that.
+    """
+
+    group: str
+    record_count: int
+    total_available: int | None = None
+    truncated: bool = False
+
+
 class Meta(BaseModel):
     query_interpretation: QueryInterpretation
     filters: dict[str, Any]
@@ -90,9 +105,14 @@ class Meta(BaseModel):
     source_api: str = "https://clinicaltrials.gov/api/v2/studies"
     # Studies actually analysed.
     record_count: int
-    # Studies matching upstream. Exceeds record_count when the fetch cap truncates.
+    # Studies matching upstream. Exceeds record_count when the fetch cap
+    # truncates. Deliberately null for comparisons -- groups are fetched by
+    # separate queries whose match sets can overlap, so a combined total would
+    # be a number with no defensible meaning. See `groups` instead.
     total_available: int | None = None
     truncated: bool = False
+    # Populated only for comparisons: one entry per group, in chart series order.
+    groups: list[GroupMeta] | None = None
     # Analytical caveats: multi-phase handling, multi-country double counting,
     # undated studies excluded, caps applied. Always populated where relevant.
     notes: list[str] = Field(default_factory=list)

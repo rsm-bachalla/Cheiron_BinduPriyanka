@@ -29,7 +29,10 @@ Fill filters only with values the question actually states:
 Rules:
 - Return only the plan. Never return trial counts, statistics, study IDs, or findings.
 - Never estimate or calculate anything. You do not have the data.
-- Use comparison_groups only for `comparison`, listing each entity separately.
+- Use comparison_groups only for `comparison`, listing each entity separately,
+  and set comparison_field to the filter those names belong in (drug, condition,
+  sponsor, or country). Do not also put one of them in filters -- the groups
+  supply that value. Any other filter in the question applies to every group.
 - Do not invent filters the question does not mention.
 - title is a short chart title.
 - intent is one plain sentence restating the question.
@@ -52,6 +55,7 @@ PLANNER_EXAMPLES = [
             "dimension": "phase",
             "filters": {"condition": "breast cancer"},
             "comparison_groups": [],
+            "comparison_field": "drug",
             "title": "Breast Cancer Trials by Phase",
         },
     ),
@@ -63,6 +67,7 @@ PLANNER_EXAMPLES = [
             "dimension": "year",
             "filters": {"drug": "pembrolizumab"},
             "comparison_groups": [],
+            "comparison_field": "drug",
             "title": "Pembrolizumab Trials Over Time",
         },
     ),
@@ -74,6 +79,7 @@ PLANNER_EXAMPLES = [
             "dimension": "country",
             "filters": {"condition": "lung cancer", "status": "RECRUITING"},
             "comparison_groups": [],
+            "comparison_field": "drug",
             "title": "Recruiting Lung Cancer Trials by Country",
         },
     ),
@@ -85,7 +91,24 @@ PLANNER_EXAMPLES = [
             "dimension": "phase",
             "filters": {},
             "comparison_groups": ["pembrolizumab", "nivolumab"],
+            "comparison_field": "drug",
             "title": "Pembrolizumab vs Nivolumab by Phase",
+        },
+    ),
+    (
+        "Compare recruiting trials for pembrolizumab and nivolumab by country",
+        {
+            "intent": (
+                "Compare where pembrolizumab and nivolumab recruiting trials run."
+            ),
+            "operation": "comparison",
+            "dimension": "country",
+            # A shared filter stays in `filters` and applies to every group;
+            # only the compared entity moves into comparison_groups.
+            "filters": {"status": "RECRUITING"},
+            "comparison_groups": ["pembrolizumab", "nivolumab"],
+            "comparison_field": "drug",
+            "title": "Pembrolizumab vs Nivolumab: Recruiting Trials by Country",
         },
     ),
     (
@@ -96,6 +119,7 @@ PLANNER_EXAMPLES = [
             "dimension": "sponsor",
             "filters": {"condition": "melanoma"},
             "comparison_groups": [],
+            "comparison_field": "drug",
             "title": "Melanoma Sponsor-Drug Network",
         },
     ),
@@ -112,6 +136,7 @@ PLANNER_EXAMPLES = [
                 "start_year": 2019,
             },
             "comparison_groups": [],
+            "comparison_field": "drug",
             "title": "Phase 3 Melanoma Trials in France by Status",
         },
     ),

@@ -6,7 +6,7 @@ shape changes, this is the only module that moves.
 
 import logging
 
-from app.schemas.study import Study
+from app.schemas.study import Intervention, Study
 
 logger = logging.getLogger(__name__)
 
@@ -112,7 +112,11 @@ def normalize_study(raw: dict, group: str | None = None) -> Study | None:
         lead_sponsor=lead_sponsor.get("name"),
         sponsor_class=lead_sponsor.get("class"),
         countries=countries,
-        interventions=[i["name"] for i in interventions if i.get("name")],
+        interventions=[
+            Intervention(name=i["name"], type=i.get("type"))
+            for i in interventions
+            if i.get("name")
+        ],
         study_type=design.get("studyType"),
         group=group,
     )

@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     # Citations
     citations_per_point: int = 3
 
+    # Network analysis. A broad condition can produce thousands of sponsor-drug
+    # pairs, which is unrenderable and unreadable; the cap is always disclosed
+    # in the response notes.
+    network_top_edges: int = 40
+
     # LLM. Unused in the deterministic slice; wired in the planner step.
     #
     # "rulebased" uses the deterministic pattern planner only (no credentials

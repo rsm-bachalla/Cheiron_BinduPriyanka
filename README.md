@@ -64,6 +64,7 @@ curl -X POST localhost:8000/query \
 | `OPENAI_BASE_URL` | — | Set for an OpenAI-compatible gateway |
 | `CTGOV_MAX_RECORDS` | `1000` | Per-query fetch cap; truncation is disclosed |
 | `CITATIONS_PER_POINT` | `3` | Source records attached to each data point |
+| `NETWORK_TOP_EDGES` | `40` | Sponsor-drug edges kept; the cap is disclosed |
 
 **The service runs without credentials.** With no key it falls back to a
 deterministic pattern planner that handles a narrow set of phrasings and refuses
@@ -164,6 +165,91 @@ Response (abridged):
 Rows are addressable through `encoding`, so a frontend can render any chart type
 generically without special-casing the question that produced it.
 
+### Comparisons
+
+Each comparison group is its own ClinicalTrials.gov query, fanned out
+concurrently with `asyncio.gather`, and every shared filter in the plan applies
+to all of them. Group membership is decided by upstream matching — never by
+fetching one broad result set and guessing locally who belongs where.
+
+Rows carry a `group` and the encoding declares it as the series:
+
+```json
+{
+  "type": "grouped_bar_chart",
+  "encoding": {
+    "x": { "field": "phase", "type": "nominal", "title": "Trial Phase" },
+    "y": { "field": "trial_count", "type": "quantitative", "title": "Number of Trials" },
+    "series": { "field": "group", "type": "nominal", "title": "Group" }
+  },
+  "data": [
+    { "phase": "Phase 3", "group": "pembrolizumab", "trial_count": 114, "citations": [] },
+    { "phase": "Phase 3", "group": "nivolumab", "trial_count": 82, "citations": [] }
+  ]
+}
+```
+
+Output is **dense**: every (label, group) pair is emitted, with an explicit zero
+where a group has no trials, so a gap renders as a zero-height bar rather than a
+missing row a frontend has to infer.
+
+Three honesty rules follow from groups being independent queries:
+
+- `meta.groups` reports `record_count`, `total_available`, and `truncated` **per
+  group**. One series capped at 1000 while the other returns 258 is not a
+  like-for-like chart, and the caller can see that.
+- `meta.total_available` is **null** for comparisons. Group match sets overlap —
+  a trial studying both drugs is legitimately in both series — so a combined
+  total would be a number with no defensible meaning.
+- **If one group fails upstream, the whole request fails** with a `502` naming
+  the failed group. A chart missing one of its two series reads as a finding
+  ("nivolumab has no phase 3 trials") when it is actually an outage.
+
+### Networks
+
+A relationship graph is not a list of rows, so it is not forced into one.
+`network_graph` populates `nodes` and `edges` instead, and leaves `data` empty:
+
+```json
+{
+  "type": "network_graph",
+  "nodes": [
+    { "id": "Bristol-Myers Squibb", "label": "Bristol-Myers Squibb",
+      "node_type": "sponsor", "trial_count": 41 },
+    { "id": "Ipilimumab", "label": "Ipilimumab", "node_type": "drug", "trial_count": 33 }
+  ],
+  "edges": [
+    { "source": "Bristol-Myers Squibb", "target": "Ipilimumab",
+      "trial_count": 16, "citations": [ ... ] }
+  ]
+}
+```
+
+Nodes are lead sponsors and their drug interventions; an edge means the sponsor
+ran at least one trial using that drug. **Edge weight is distinct trials, and a
+trial contributes at most once to a given edge** no matter how many arms repeat
+the intervention. Names are matched case-insensitively with whitespace
+collapsed, so "Merck  Sharp & Dohme" and "merck sharp & dohme" are one node.
+
+**Citations live on edges**, because the edge is the claim being made — and the
+excerpt quotes both halves of it (`"Lead sponsor: … | Intervention: …"`), so a
+reader can open the record and check the relationship rather than just the
+existence of a trial.
+
+Broad conditions produce thousands of pairs, so edges are capped at
+`NETWORK_TOP_EDGES` by weight, with ties broken on name so the same input always
+yields the same graph. Nodes orphaned by the cap are dropped. The cap, the
+excluded studies, and the fact that node counts span the uncapped graph are all
+disclosed in `meta.notes`.
+
+One judgement call worth stating: **`BIOLOGICAL` interventions count as drugs.**
+The registry uses the type interchangeably with `DRUG` for the same molecule —
+across a 500-study melanoma sample, pembrolizumab was typed `DRUG` 29 times and
+`BIOLOGICAL` 18 times. Accepting only `DRUG` splits one node in two and drops
+roughly a third of the edges for exactly the monoclonal antibodies these
+questions are usually about. The set is one constant in `network.py` and the
+choice is named in the response notes.
+
 ### Errors
 
 The service **refuses rather than guesses**. A question it cannot map with
@@ -247,7 +333,7 @@ app/
   pipeline.py         plan -> fetch -> normalize -> aggregate -> visualize -> cite
   clinicaltrials.py   async API client + Essie expression builder
   normalize.py        raw JSON -> Study
-  aggregate.py        deterministic counting -> Bucket
+  aggregate.py        deterministic counting -> Bucket (incl. grouped comparison)
   viz.py              chart selection + spec construction
   citations.py        NCT references per data point
   llm/
@@ -257,15 +343,15 @@ app/
     factory.py        provider selection
   schemas/            plan.py (LLM contract), study.py, api.py (public contract)
 docs/api-findings.md  verified upstream API behaviour
-tests/                103 tests, offline
+  network.py          sponsor-drug graph -> nodes + edges
+tests/                151 tests, offline
 ```
 
 ## Status
 
-**Working:** `distribution`, `time_trend`, and `geo` analyses over phase, status,
-year, country, sponsor, and sponsor type — via the OpenAI planner, with
-citations, disclosure notes, and the full fallback ladder.
+**Working:** all five analyses — `distribution`, `time_trend`, `geo`,
+`comparison`, and `network` — over phase, status, year, country, sponsor, and
+sponsor type, via the OpenAI planner, with citations, disclosure notes, and the
+full fallback ladder.
 
-**Not yet built:** `comparison` (concurrent per-group fan-out) and `network`
-(nodes + edges) aggregators. The planner produces valid plans for both; the
-pipeline returns a `501` naming the interpreted intent. Streamlit demo follows.
+**Next:** the Streamlit demo, as a pure consumer of this HTTP contract.

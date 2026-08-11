@@ -18,6 +18,18 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 _STRAY_CHARS = ' \t\n"\'{}[](),;:.'
 
 
+def clean_entity(value: str) -> str | None:
+    """Collapse whitespace and strip stray punctuation from a model-supplied name.
+
+    Applied to every free-text value the LLM can put on the wire -- filters and
+    comparison group names alike -- since both end up inside an Essie phrase
+    literal. Returns None when nothing survives, because an empty phrase match
+    would silently match everything.
+    """
+    cleaned = " ".join(value.split()).strip(_STRAY_CHARS)
+    return cleaned or None
+
+
 class AnalysisOp(str, Enum):
     """The deterministic analysis to run over the fetched studies."""
 
@@ -37,6 +49,20 @@ class Dimension(str, Enum):
     COUNTRY = "country"
     SPONSOR = "sponsor"
     SPONSOR_TYPE = "sponsor_type"
+
+
+class ComparisonField(str, Enum):
+    """Which filter field the `comparison_groups` values populate.
+
+    "Pembrolizumab vs nivolumab" compares drugs; "breast cancer vs lung cancer"
+    compares conditions. Without this the fan-out would have to guess, so the
+    planner states it explicitly and the pipeline just obeys.
+    """
+
+    DRUG = "drug"
+    CONDITION = "condition"
+    SPONSOR = "sponsor"
+    COUNTRY = "country"
 
 
 class TrialPhase(str, Enum):
@@ -97,8 +123,7 @@ class TrialFilters(BaseModel):
         """
         if not isinstance(value, str):
             return value
-        cleaned = " ".join(value.split()).strip(_STRAY_CHARS)
-        return cleaned or None
+        return clean_entity(value)
 
     @model_validator(mode="after")
     def _check_year_order(self) -> "TrialFilters":
@@ -137,7 +162,32 @@ class QueryPlan(BaseModel):
         default_factory=list,
         description="Drug/entity names to compare; each is fetched separately",
     )
+    comparison_field: ComparisonField = Field(
+        ComparisonField.DRUG,
+        description="Which filter the comparison_groups values populate",
+    )
     title: str = Field(..., description="Human-readable chart title")
+
+    @field_validator("comparison_groups", mode="before")
+    @classmethod
+    def _clean_groups(cls, value: object) -> object:
+        """Group names become Essie phrase literals, so they need the same
+        sanitisation as free-text filters. Values that clean to nothing are
+        dropped rather than becoming a match-everything group."""
+        if not isinstance(value, list):
+            return value
+        groups: list[str] = []
+        seen: set[str] = set()
+        for raw in value:
+            name = clean_entity(raw) if isinstance(raw, str) else raw
+            if name is None or not isinstance(name, str):
+                continue
+            # Repeating a group would fetch it twice and draw it twice.
+            if name.casefold() in seen:
+                continue
+            seen.add(name.casefold())
+            groups.append(name)
+        return groups
 
     @model_validator(mode="after")
     def _check_comparison_groups(self) -> "QueryPlan":
