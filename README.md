@@ -515,9 +515,12 @@ not part of `make test`.
 
 ## 13. AI tools used
 
-Claude Code was used throughout implementation for scaffolding, implementation
-assistance, test generation, debugging, and documentation. OpenAI is used at
-runtime, for query planning only.
+Claude Code was used for scaffolding, implementation assistance, test
+generation, debugging, and documentation. Architectural decisions, data
+semantics, error-handling behavior, validation strategy, and tradeoffs were
+reviewed and deliberately chosen based on live testing and observed API
+behavior — not accepted as generated. OpenAI is used at runtime, for query
+planning only.
 
 Generated and adapted code was validated rather than trusted:
 
@@ -554,8 +557,12 @@ The following decisions were made deliberately by me, not delegated:
   point and its sources are structurally inseparable.
 - **Sponsor/drug network semantics** — what a node is, what an edge means, unique
   trials as edge weight, and the `BIOLOGICAL` inclusion.
-- **Safe fallback behavior** — a bounded failure ladder that refuses rather than
-  guesses.
+- **Validation strategy** — schema validation and semantic coherence kept as
+  separate layers, because a well-formed plan can still be nonsense, and the
+  second check must not depend on the model that produced the plan.
+- **Error-handling behavior and safe fallback** — a bounded failure ladder that
+  refuses rather than guesses, distinct error codes per cause, and provider
+  error bodies never crossing the boundary to the client.
 
 ## 14. Repository structure
 
