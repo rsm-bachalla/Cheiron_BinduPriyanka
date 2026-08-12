@@ -1,0 +1,257 @@
+{
+  "visualization": {
+    "type": "bar_chart",
+    "title": "Breast Cancer Trials by Phase",
+    "encoding": {
+      "x": {
+        "field": "phase",
+        "type": "nominal",
+        "title": "Trial Phase"
+      },
+      "y": {
+        "field": "trial_count",
+        "type": "quantitative",
+        "title": "Number of Trials"
+      }
+    },
+    "data": [
+      {
+        "phase": "Early Phase 1",
+        "trial_count": 14,
+        "citations": [
+          {
+            "nct_id": "NCT04752267",
+            "url": "https://clinicaltrials.gov/study/NCT04752267",
+            "title": "18F-FMAU PET/CT and MRI for the Detection of Brain Tumors in Patients With Brain Cancer or Brain Metastases",
+            "excerpt": "Phase: EARLY_PHASE1"
+          },
+          {
+            "nct_id": "NCT01380353",
+            "url": "https://clinicaltrials.gov/study/NCT01380353",
+            "title": "Test Uniformity of Transdermal Drug Delivery to Breast Using Diclofenac Epolamine",
+            "excerpt": "Phase: EARLY_PHASE1"
+          },
+          {
+            "nct_id": "NCT01697345",
+            "url": "https://clinicaltrials.gov/study/NCT01697345",
+            "title": "Breast Cancer, Aromatase Inhibitor Therapy, and Sexual Functioning: The Effects of Vaginal Testosterone Therapy",
+            "excerpt": "Phase: EARLY_PHASE1"
+          }
+        ]
+      },
+      {
+        "phase": "Phase 1",
+        "trial_count": 108,
+        "citations": [
+          {
+            "nct_id": "NCT06633601",
+            "url": "https://clinicaltrials.gov/study/NCT06633601",
+            "title": "MRI-Guided Ultrasound Stimulated Microbubbles Radiation Treatment for Patients with Chest-Wall and Locally Advanced Breast Cancer",
+            "excerpt": "Phase: PHASE1"
+          },
+          {
+            "nct_id": "NCT04252300",
+            "url": "https://clinicaltrials.gov/study/NCT04252300",
+            "title": "Study to Learn the Effect of Drug BAY1817080 on the Way the Body Absorbs, Distributes and Excretes Another Drug Rosuvastatin in Healthy Adult Participants",
+            "excerpt": "Phase: PHASE1"
+          },
+          {
+            "nct_id": "NCT00976339",
+            "url": "https://clinicaltrials.gov/study/NCT00976339",
+            "title": "Study of Vitamin D for Premenopausal Women at High Risk for Breast Cancer",
+            "excerpt": "Phase: PHASE1"
+          }
+        ]
+      },
+      {
+        "phase": "Phase 1/Phase 2",
+        "trial_count": 52,
+        "citations": [
+          {
+            "nct_id": "NCT05941507",
+            "url": "https://clinicaltrials.gov/study/NCT05941507",
+            "title": "A Study to Evaluate TROP2 ADC LCB84 Single Agent and in Combination With an Anti-PD-1 Ab in Advanced Solid Tumors",
+            "excerpt": "Phase: PHASE1, PHASE2"
+          },
+          {
+            "nct_id": "NCT01105312",
+            "url": "https://clinicaltrials.gov/study/NCT01105312",
+            "title": "Panobinostat and Letrozole in Treating Patients With Metastatic Breast Cancer",
+            "excerpt": "Phase: PHASE1, PHASE2"
+          },
+          {
+            "nct_id": "NCT07189884",
+            "url": "https://clinicaltrials.gov/study/NCT07189884",
+            "title": "Pyrotinib Maleate Tablets in Combination With Dalpiciclib Isethionate Tablets and Standard Endocrine Therapy",
+            "excerpt": "Phase: PHASE1, PHASE2"
+          }
+        ]
+      },
+      {
+        "phase": "Phase 2",
+        "trial_count": 213,
+        "citations": [
+          {
+            "nct_id": "NCT02513329",
+            "url": "https://clinicaltrials.gov/study/NCT02513329",
+            "title": "Stellate Ganglion Block (SGB) For Women for Breast Cancer",
+            "excerpt": "Phase: PHASE2"
+          },
+          {
+            "nct_id": "NCT05800275",
+            "url": "https://clinicaltrials.gov/study/NCT05800275",
+            "title": "Capecitabine, Tucatinib, and Intrathecal Trastuzumab for Breast Cancer Patients With Leptomeningeal Disease",
+            "excerpt": "Phase: PHASE2"
+          },
+          {
+            "nct_id": "NCT02549430",
+            "url": "https://clinicaltrials.gov/study/NCT02549430",
+            "title": "To Reverse ENDocrine Resistance Trial - PD 0332991 Monotherapy vs PD 0332991 in Combination With the Endocrine Therapy",
+            "excerpt": "Phase: PHASE2"
+          }
+        ]
+      },
+      {
+        "phase": "Phase 2/Phase 3",
+        "trial_count": 7,
+        "citations": [
+          {
+            "nct_id": "NCT00393172",
+            "url": "https://clinicaltrials.gov/study/NCT00393172",
+            "title": "Women in Steady Exercise Research [Formerly Women, Oxidative Stress, Exercise and Estrogens (WOSEE)]",
+            "excerpt": "Phase: PHASE2, PHASE3"
+          },
+          {
+            "nct_id": "NCT01902823",
+            "url": "https://clinicaltrials.gov/study/NCT01902823",
+            "title": "Effect of Cancer Nurse Navigators on Patient Outcomes",
+            "excerpt": "Phase: PHASE2, PHASE3"
+          },
+          {
+            "nct_id": "NCT04554056",
+            "url": "https://clinicaltrials.gov/study/NCT04554056",
+            "title": "Trial to Compare the Efficacy and Safety Of MW05 and PEG-rhG-CSF",
+            "excerpt": "Phase: PHASE2, PHASE3"
+          }
+        ]
+      },
+      {
+        "phase": "Phase 3",
+        "trial_count": 89,
+        "citations": [
+          {
+            "nct_id": "NCT00002777",
+            "url": "https://clinicaltrials.gov/study/NCT00002777",
+            "title": "Exemestane Compared With Tamoxifen in Treating Women With Locally Recurrent or Metastatic Breast Cancer",
+            "excerpt": "Phase: PHASE3"
+          },
+          {
+            "nct_id": "NCT03055312",
+            "url": "https://clinicaltrials.gov/study/NCT03055312",
+            "title": "Bicalutamide in Treatment of Androgen Receptor (AR) Positive Metastatic Triple Negative Breast Cancer",
+            "excerpt": "Phase: PHASE3"
+          },
+          {
+            "nct_id": "NCT07084519",
+            "url": "https://clinicaltrials.gov/study/NCT07084519",
+            "title": "Hypofractionated vs Conventional RT After Prosthetic Breast Reconstruction",
+            "excerpt": "Phase: PHASE3"
+          }
+        ]
+      },
+      {
+        "phase": "Phase 4",
+        "trial_count": 25,
+        "citations": [
+          {
+            "nct_id": "NCT05420467",
+            "url": "https://clinicaltrials.gov/study/NCT05420467",
+            "title": "A Study for the Adjuvant Treatment of Breast Cancer",
+            "excerpt": "Phase: PHASE4"
+          },
+          {
+            "nct_id": "NCT02553707",
+            "url": "https://clinicaltrials.gov/study/NCT02553707",
+            "title": "A Study to Assess the Short Term Efficacy of Intravenous Ibandronate (Bondronat) in Participants With Metastatic Bone Pain Due to Breast Cancer",
+            "excerpt": "Phase: PHASE4"
+          },
+          {
+            "nct_id": "NCT05841849",
+            "url": "https://clinicaltrials.gov/study/NCT05841849",
+            "title": "Efficacy and Safety of Intravenous Versus Oral 5-HT3 Antagonists Combined With NK-1 Receptor Antagonists for the Prevention of CINV in Breast Cancer",
+            "excerpt": "Phase: PHASE4"
+          }
+        ]
+      },
+      {
+        "phase": "Not Applicable",
+        "trial_count": 282,
+        "citations": [
+          {
+            "nct_id": "NCT03726931",
+            "url": "https://clinicaltrials.gov/study/NCT03726931",
+            "title": "FES (16α-[18F]-Fluoro-17β-estradiol)-PET: Towards a New Standard to Stage Locally Advanced and Recurrent, Estrogen Receptor Positive (ER+) Breast Cancer? Pilot Study to Compare [18F]FES-PET and [18F]FDG-PET",
+            "excerpt": "Phase: NA"
+          },
+          {
+            "nct_id": "NCT02611557",
+            "url": "https://clinicaltrials.gov/study/NCT02611557",
+            "title": "Lymphedema Progression Screening Using MRI",
+            "excerpt": "Phase: NA"
+          },
+          {
+            "nct_id": "NCT02540083",
+            "url": "https://clinicaltrials.gov/study/NCT02540083",
+            "title": "Assessment of Diagnostic Accuracy and Performance of Digital Breast Tomosynthesis Compared to Mammography",
+            "excerpt": "Phase: NA"
+          }
+        ]
+      },
+      {
+        "phase": "Not Specified",
+        "trial_count": 210,
+        "citations": [
+          {
+            "nct_id": "NCT06914661",
+            "url": "https://clinicaltrials.gov/study/NCT06914661",
+            "title": "Efficacy and Safety of DS8201 in Metastatic Breast Cancer's Treatment",
+            "excerpt": "Phase: none recorded"
+          },
+          {
+            "nct_id": "NCT01664494",
+            "url": "https://clinicaltrials.gov/study/NCT01664494",
+            "title": "An Observational Study of Xeloda (Capecitabine) in Patients With Metastatic Colorectal Cancer, Colon Cancer in the Adjuvant Setting, Advanced Gastric Cancer or Breast Cancer",
+            "excerpt": "Phase: none recorded"
+          },
+          {
+            "nct_id": "NCT00559039",
+            "url": "https://clinicaltrials.gov/study/NCT00559039",
+            "title": "Effects of Fetal, Infant, and Early Childhood Exposures on Adult Cancer Risk in Women",
+            "excerpt": "Phase: none recorded"
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "query_interpretation": {
+      "intent": "Break down breast cancer trials by phase.",
+      "operation": "distribution",
+      "dimension": "phase",
+      "planner": "openai"
+    },
+    "filters": {
+      "condition": "breast cancer"
+    },
+    "source": "ClinicalTrials.gov",
+    "source_api": "https://clinicaltrials.gov/api/v2/studies",
+    "record_count": 1000,
+    "total_available": 16520,
+    "truncated": true,
+    "notes": [
+      "Analysed 1000 of 16520 matching trials (capped at 1000); counts are a sample, not registry totals.",
+      "'Not Specified' covers studies with no phase recorded (typically observational); it is distinct from 'Not Applicable'.",
+      "Studies registered under multiple phases (e.g. 'Phase 1/Phase 2') form their own bucket and are not counted under each phase, so bucket counts sum to the study count."
+    ]
+  }
+}

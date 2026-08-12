@@ -1,0 +1,1373 @@
+{
+  "visualization": {
+    "type": "geo_ranking",
+    "title": "Recruiting Lung Cancer Trials by Country",
+    "encoding": {
+      "x": {
+        "field": "country",
+        "type": "nominal",
+        "title": "Country"
+      },
+      "y": {
+        "field": "trial_count",
+        "type": "quantitative",
+        "title": "Number of Trials"
+      }
+    },
+    "data": [
+      {
+        "country": "China",
+        "trial_count": 401,
+        "citations": [
+          {
+            "nct_id": "NCT06241807",
+            "url": "https://clinicaltrials.gov/study/NCT06241807",
+            "title": "Neoadjuvant Camrelizumab Combined With Chemotherapy for Resectable Stage IIIA-IIIB NSCLC",
+            "excerpt": "Locations: China"
+          },
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06863506",
+            "url": "https://clinicaltrials.gov/study/NCT06863506",
+            "title": "Phase II Clinical Study of Befotertinib in EGFR Non-classical Mutant NSCLC",
+            "excerpt": "Locations: China"
+          }
+        ]
+      },
+      {
+        "country": "United States",
+        "trial_count": 377,
+        "citations": [
+          {
+            "nct_id": "NCT05431270",
+            "url": "https://clinicaltrials.gov/study/NCT05431270",
+            "title": "Dose Escalation/Expansion Study of Mavrostobart (PT199), an Anti-CD73 mAb, Administered Alone and in Combination With a PD-1 Inhibitor or Chemotherapy (the MORNINGSTAR Study)",
+            "excerpt": "Locations: United States"
+          },
+          {
+            "nct_id": "NCT07660094",
+            "url": "https://clinicaltrials.gov/study/NCT07660094",
+            "title": "Aglatimagene Besadenovec + Prodrug and Pembrolizumab vs Docetaxel for Stage IV Non-Squamous NSCLC Progressing on Pembrolizumab (AURORA)",
+            "excerpt": "Locations: United States"
+          },
+          {
+            "nct_id": "NCT05941507",
+            "url": "https://clinicaltrials.gov/study/NCT05941507",
+            "title": "A Study to Evaluate TROP2 ADC LCB84 Single Agent and in Combination With an Anti-PD-1 Ab in Advanced Solid Tumors",
+            "excerpt": "Locations: United States, Canada"
+          }
+        ]
+      },
+      {
+        "country": "France",
+        "trial_count": 105,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT05122806",
+            "url": "https://clinicaltrials.gov/study/NCT05122806",
+            "title": "Analysis of Biological Characteristics of Advanced ALK-rearranged NSCLC",
+            "excerpt": "Locations: France"
+          },
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          }
+        ]
+      },
+      {
+        "country": "Italy",
+        "trial_count": 99,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06737107",
+            "url": "https://clinicaltrials.gov/study/NCT06737107",
+            "title": "Multicenter Analysis of Different Approaches in Segmentectomies in Early-stage Lung Cancer",
+            "excerpt": "Locations: Italy"
+          },
+          {
+            "nct_id": "NCT07646106",
+            "url": "https://clinicaltrials.gov/study/NCT07646106",
+            "title": "THE-0504 in Patients With Solid Tumors",
+            "excerpt": "Locations: Italy"
+          }
+        ]
+      },
+      {
+        "country": "Spain",
+        "trial_count": 98,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          },
+          {
+            "nct_id": "NCT07286149",
+            "url": "https://clinicaltrials.gov/study/NCT07286149",
+            "title": "A Clinical Study of MK-1084 With Other Treatments for Non-small Cell Lung Cancer (MK-3475-01F)",
+            "excerpt": "Locations: United States, Brazil, Chile, China, Germany, Greece, Hong Kong, Israel, Italy, South Korea, Spain"
+          }
+        ]
+      },
+      {
+        "country": "South Korea",
+        "trial_count": 75,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT05599412",
+            "url": "https://clinicaltrials.gov/study/NCT05599412",
+            "title": "Post Marketing Surveillance(PMS) Study of Lorviqua in Korea",
+            "excerpt": "Locations: South Korea"
+          },
+          {
+            "nct_id": "NCT07102589",
+            "url": "https://clinicaltrials.gov/study/NCT07102589",
+            "title": "SWEEP: Shuttle Walking Test for Exercise Evaluation in Pulmonary Resection",
+            "excerpt": "Locations: South Korea"
+          }
+        ]
+      },
+      {
+        "country": "Canada",
+        "trial_count": 68,
+        "citations": [
+          {
+            "nct_id": "NCT05941507",
+            "url": "https://clinicaltrials.gov/study/NCT05941507",
+            "title": "A Study to Evaluate TROP2 ADC LCB84 Single Agent and in Combination With an Anti-PD-1 Ab in Advanced Solid Tumors",
+            "excerpt": "Locations: United States, Canada"
+          },
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06628102",
+            "url": "https://clinicaltrials.gov/study/NCT06628102",
+            "title": "Improving Detection of Early Lung Cancer in a Diverse Population (IDEAL) Study",
+            "excerpt": "Locations: Canada"
+          }
+        ]
+      },
+      {
+        "country": "Germany",
+        "trial_count": 66,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06252233",
+            "url": "https://clinicaltrials.gov/study/NCT06252233",
+            "title": "Improvement of Quality of Life (QoL) Using Preference-Oriented QoLMonitoring in Patients with Lung Cancer",
+            "excerpt": "Locations: Germany"
+          },
+          {
+            "nct_id": "NCT05281406",
+            "url": "https://clinicaltrials.gov/study/NCT05281406",
+            "title": "Additional Chemotherapy for EGFRm Patients with the Continued Presence of Plasma CtDNA EGFRm At Week 3 After Start of Osimertinib 1st-line Treatment (PACE-LUNG)",
+            "excerpt": "Locations: Germany"
+          }
+        ]
+      },
+      {
+        "country": "United Kingdom",
+        "trial_count": 66,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT05655078",
+            "url": "https://clinicaltrials.gov/study/NCT05655078",
+            "title": "Hemithoracic Irradiation With Proton Therapy in Malignant Pleural Mesothelioma",
+            "excerpt": "Locations: United Kingdom"
+          },
+          {
+            "nct_id": "NCT03987633",
+            "url": "https://clinicaltrials.gov/study/NCT03987633",
+            "title": "EMPOWER-1: A Multi-site Clinical Cohort Research Study to Reduce Health Inequality",
+            "excerpt": "Locations: United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Australia",
+        "trial_count": 61,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06494254",
+            "url": "https://clinicaltrials.gov/study/NCT06494254",
+            "title": "Post-Operative Prediction of PulmonarY Function",
+            "excerpt": "Locations: Australia"
+          },
+          {
+            "nct_id": "NCT07431827",
+            "url": "https://clinicaltrials.gov/study/NCT07431827",
+            "title": "MK-3475A±Calderasib (MK-1084) in Completely Resected Stage IIA-IIIB (N2) KRAS G12Cm NSCLC (MK-1084-013)",
+            "excerpt": "Locations: Argentina, Australia, Brazil, Canada, China, France, Greece, Hong Kong, Italy, South Korea, Spain, Taiwan, Turkey (Türkiye), Ukraine"
+          }
+        ]
+      },
+      {
+        "country": "Taiwan",
+        "trial_count": 53,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07431827",
+            "url": "https://clinicaltrials.gov/study/NCT07431827",
+            "title": "MK-3475A±Calderasib (MK-1084) in Completely Resected Stage IIA-IIIB (N2) KRAS G12Cm NSCLC (MK-1084-013)",
+            "excerpt": "Locations: Argentina, Australia, Brazil, Canada, China, France, Greece, Hong Kong, Italy, South Korea, Spain, Taiwan, Turkey (Türkiye), Ukraine"
+          },
+          {
+            "nct_id": "NCT04165070",
+            "url": "https://clinicaltrials.gov/study/NCT04165070",
+            "title": "KEYMAKER-U01 Substudy 01A: Efficacy and Safety Study of Pembrolizumab (MK-3475) With or Without Chemotherapy When Used With Investigational Agents in Treatment-naïve Participants With Stage IV Non-small Cell Lung Cancer (NSCLC) (MK-3475-01A/KEYMAKER-U01A)",
+            "excerpt": "Locations: United States, Hungary, Israel, Italy, Poland, South Korea, Spain, Taiwan, Ukraine"
+          }
+        ]
+      },
+      {
+        "country": "Japan",
+        "trial_count": 52,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          },
+          {
+            "nct_id": "NCT06780137",
+            "url": "https://clinicaltrials.gov/study/NCT06780137",
+            "title": "A Study to Evaluate the Safety and Efficacy of Gocatamig (MK-6070) and Ifinatamab Deruxtecan (I-DXd) in Participants With Relapsed/Refractory Extensive-Stage Small Cell Lung Cancer (MK-6070-002)",
+            "excerpt": "Locations: United States, Argentina, Australia, Chile, China, Israel, Japan, South Korea, Spain, Taiwan, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Netherlands",
+        "trial_count": 45,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          },
+          {
+            "nct_id": "NCT06222489",
+            "url": "https://clinicaltrials.gov/study/NCT06222489",
+            "title": "Whole Body HER3 Quantification With Radiolabelled Patritumab Deruxtecan (HER3-DXd) PET/CT",
+            "excerpt": "Locations: Netherlands"
+          }
+        ]
+      },
+      {
+        "country": "Belgium",
+        "trial_count": 43,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07230691",
+            "url": "https://clinicaltrials.gov/study/NCT07230691",
+            "title": "A Study of Clinical Outcomes in Participants With EGFR Mutated Advanced Non-Small Cell Lung Cancer (NSCLC) in a Real-World Setting",
+            "excerpt": "Locations: Austria, Belgium, Czechia, Germany, Israel, Italy, Spain, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06303505",
+            "url": "https://clinicaltrials.gov/study/NCT06303505",
+            "title": "FiH Study to Investigate Safety, PK and Efficacy of the NaPi2b ADC TUB-040 in Patients With PROC or r/r Adenocarcinoma NSCLC",
+            "excerpt": "Locations: United States, Belgium, Germany, Romania, Spain, Ukraine, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Poland",
+        "trial_count": 36,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06936969",
+            "url": "https://clinicaltrials.gov/study/NCT06936969",
+            "title": "Comparison of 40% Glucose Solution and Autologous Blood Patch Pleurodesis for Postoperative Air Leak After Lung Resections",
+            "excerpt": "Locations: Poland"
+          },
+          {
+            "nct_id": "NCT04165070",
+            "url": "https://clinicaltrials.gov/study/NCT04165070",
+            "title": "KEYMAKER-U01 Substudy 01A: Efficacy and Safety Study of Pembrolizumab (MK-3475) With or Without Chemotherapy When Used With Investigational Agents in Treatment-naïve Participants With Stage IV Non-small Cell Lung Cancer (NSCLC) (MK-3475-01A/KEYMAKER-U01A)",
+            "excerpt": "Locations: United States, Hungary, Israel, Italy, Poland, South Korea, Spain, Taiwan, Ukraine"
+          }
+        ]
+      },
+      {
+        "country": "Turkey (Türkiye)",
+        "trial_count": 31,
+        "citations": [
+          {
+            "nct_id": "NCT07431827",
+            "url": "https://clinicaltrials.gov/study/NCT07431827",
+            "title": "MK-3475A±Calderasib (MK-1084) in Completely Resected Stage IIA-IIIB (N2) KRAS G12Cm NSCLC (MK-1084-013)",
+            "excerpt": "Locations: Argentina, Australia, Brazil, Canada, China, France, Greece, Hong Kong, Italy, South Korea, Spain, Taiwan, Turkey (Türkiye), Ukraine"
+          },
+          {
+            "nct_id": "NCT06780137",
+            "url": "https://clinicaltrials.gov/study/NCT06780137",
+            "title": "A Study to Evaluate the Safety and Efficacy of Gocatamig (MK-6070) and Ifinatamab Deruxtecan (I-DXd) in Participants With Relapsed/Refractory Extensive-Stage Small Cell Lung Cancer (MK-6070-002)",
+            "excerpt": "Locations: United States, Argentina, Australia, Chile, China, Israel, Japan, South Korea, Spain, Taiwan, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT06899126",
+            "url": "https://clinicaltrials.gov/study/NCT06899126",
+            "title": "Study of Trastuzumab Deruxtecan, Pembrolizumab, and Platinum-based Chemotherapy in First-line HER2 Overexpressing Non-small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Belgium, Brazil, Chile, China, France, Germany, Greece, Hong Kong, India, Italy, Japan, Malaysia, Poland, Portugal, Romania, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Israel",
+        "trial_count": 30,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07286149",
+            "url": "https://clinicaltrials.gov/study/NCT07286149",
+            "title": "A Clinical Study of MK-1084 With Other Treatments for Non-small Cell Lung Cancer (MK-3475-01F)",
+            "excerpt": "Locations: United States, Brazil, Chile, China, Germany, Greece, Hong Kong, Israel, Italy, South Korea, Spain"
+          },
+          {
+            "nct_id": "NCT07230691",
+            "url": "https://clinicaltrials.gov/study/NCT07230691",
+            "title": "A Study of Clinical Outcomes in Participants With EGFR Mutated Advanced Non-Small Cell Lung Cancer (NSCLC) in a Real-World Setting",
+            "excerpt": "Locations: Austria, Belgium, Czechia, Germany, Israel, Italy, Spain, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Brazil",
+        "trial_count": 27,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07286149",
+            "url": "https://clinicaltrials.gov/study/NCT07286149",
+            "title": "A Clinical Study of MK-1084 With Other Treatments for Non-small Cell Lung Cancer (MK-3475-01F)",
+            "excerpt": "Locations: United States, Brazil, Chile, China, Germany, Greece, Hong Kong, Israel, Italy, South Korea, Spain"
+          },
+          {
+            "nct_id": "NCT07431827",
+            "url": "https://clinicaltrials.gov/study/NCT07431827",
+            "title": "MK-3475A±Calderasib (MK-1084) in Completely Resected Stage IIA-IIIB (N2) KRAS G12Cm NSCLC (MK-1084-013)",
+            "excerpt": "Locations: Argentina, Australia, Brazil, Canada, China, France, Greece, Hong Kong, Italy, South Korea, Spain, Taiwan, Turkey (Türkiye), Ukraine"
+          }
+        ]
+      },
+      {
+        "country": "Denmark",
+        "trial_count": 26,
+        "citations": [
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          },
+          {
+            "nct_id": "NCT07201194",
+            "url": "https://clinicaltrials.gov/study/NCT07201194",
+            "title": "Holistic Acupuncture for Patients With Chemotherapy Induced Nausea",
+            "excerpt": "Locations: Denmark"
+          },
+          {
+            "nct_id": "NCT07460999",
+            "url": "https://clinicaltrials.gov/study/NCT07460999",
+            "title": "Singing Training vs Usual Care 6-18 Months After Surgical Resection for Non-small Cell Lung Cancer (NSCLC)",
+            "excerpt": "Locations: Denmark"
+          }
+        ]
+      },
+      {
+        "country": "Greece",
+        "trial_count": 25,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07286149",
+            "url": "https://clinicaltrials.gov/study/NCT07286149",
+            "title": "A Clinical Study of MK-1084 With Other Treatments for Non-small Cell Lung Cancer (MK-3475-01F)",
+            "excerpt": "Locations: United States, Brazil, Chile, China, Germany, Greece, Hong Kong, Israel, Italy, South Korea, Spain"
+          },
+          {
+            "nct_id": "NCT07431827",
+            "url": "https://clinicaltrials.gov/study/NCT07431827",
+            "title": "MK-3475A±Calderasib (MK-1084) in Completely Resected Stage IIA-IIIB (N2) KRAS G12Cm NSCLC (MK-1084-013)",
+            "excerpt": "Locations: Argentina, Australia, Brazil, Canada, China, France, Greece, Hong Kong, Italy, South Korea, Spain, Taiwan, Turkey (Türkiye), Ukraine"
+          }
+        ]
+      },
+      {
+        "country": "Hong Kong",
+        "trial_count": 25,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07286149",
+            "url": "https://clinicaltrials.gov/study/NCT07286149",
+            "title": "A Clinical Study of MK-1084 With Other Treatments for Non-small Cell Lung Cancer (MK-3475-01F)",
+            "excerpt": "Locations: United States, Brazil, Chile, China, Germany, Greece, Hong Kong, Israel, Italy, South Korea, Spain"
+          },
+          {
+            "nct_id": "NCT07431827",
+            "url": "https://clinicaltrials.gov/study/NCT07431827",
+            "title": "MK-3475A±Calderasib (MK-1084) in Completely Resected Stage IIA-IIIB (N2) KRAS G12Cm NSCLC (MK-1084-013)",
+            "excerpt": "Locations: Argentina, Australia, Brazil, Canada, China, France, Greece, Hong Kong, Italy, South Korea, Spain, Taiwan, Turkey (Türkiye), Ukraine"
+          }
+        ]
+      },
+      {
+        "country": "Singapore",
+        "trial_count": 25,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT04585750",
+            "url": "https://clinicaltrials.gov/study/NCT04585750",
+            "title": "The Evaluation of PC14586 in Patients With Advanced Solid Tumors Harboring a TP53 Y220C Mutation (PYNNACLE)",
+            "excerpt": "Locations: United States, Australia, France, Germany, Italy, Singapore, South Korea, Spain, United Kingdom"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          }
+        ]
+      },
+      {
+        "country": "Switzerland",
+        "trial_count": 24,
+        "citations": [
+          {
+            "nct_id": "NCT07149649",
+            "url": "https://clinicaltrials.gov/study/NCT07149649",
+            "title": "Magnesium Supplementation in Advanced Non-small Cell Lung Cancer (NSCLC)",
+            "excerpt": "Locations: Switzerland"
+          },
+          {
+            "nct_id": "NCT06712316",
+            "url": "https://clinicaltrials.gov/study/NCT06712316",
+            "title": "Safety, Efficacy, and Pharmacokinetics of BNT327 in Combination With Chemotherapy and Other Investigational Agents for Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Bulgaria, China, France, Georgia, Germany, Hungary, Italy, Japan, Poland, Romania, South Korea, Spain, Switzerland, Thailand, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          }
+        ]
+      },
+      {
+        "country": "Austria",
+        "trial_count": 20,
+        "citations": [
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          },
+          {
+            "nct_id": "NCT07230691",
+            "url": "https://clinicaltrials.gov/study/NCT07230691",
+            "title": "A Study of Clinical Outcomes in Participants With EGFR Mutated Advanced Non-Small Cell Lung Cancer (NSCLC) in a Real-World Setting",
+            "excerpt": "Locations: Austria, Belgium, Czechia, Germany, Israel, Italy, Spain, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06436625",
+            "url": "https://clinicaltrials.gov/study/NCT06436625",
+            "title": "Outpatient Pulmonary Rehabilitation in Non-small-cell Lung Cancer Receiving Immunotherapy",
+            "excerpt": "Locations: Austria"
+          }
+        ]
+      },
+      {
+        "country": "Hungary",
+        "trial_count": 20,
+        "citations": [
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          },
+          {
+            "nct_id": "NCT07743021",
+            "url": "https://clinicaltrials.gov/study/NCT07743021",
+            "title": "Health for Hungary (H4H) - Longitudinal Collection of Blood Samples and Corresponding Data",
+            "excerpt": "Locations: Hungary"
+          },
+          {
+            "nct_id": "NCT04165070",
+            "url": "https://clinicaltrials.gov/study/NCT04165070",
+            "title": "KEYMAKER-U01 Substudy 01A: Efficacy and Safety Study of Pembrolizumab (MK-3475) With or Without Chemotherapy When Used With Investigational Agents in Treatment-naïve Participants With Stage IV Non-small Cell Lung Cancer (NSCLC) (MK-3475-01A/KEYMAKER-U01A)",
+            "excerpt": "Locations: United States, Hungary, Israel, Italy, Poland, South Korea, Spain, Taiwan, Ukraine"
+          }
+        ]
+      },
+      {
+        "country": "Thailand",
+        "trial_count": 19,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          },
+          {
+            "nct_id": "NCT06899126",
+            "url": "https://clinicaltrials.gov/study/NCT06899126",
+            "title": "Study of Trastuzumab Deruxtecan, Pembrolizumab, and Platinum-based Chemotherapy in First-line HER2 Overexpressing Non-small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Belgium, Brazil, Chile, China, France, Germany, Greece, Hong Kong, India, Italy, Japan, Malaysia, Poland, Portugal, Romania, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Romania",
+        "trial_count": 17,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06303505",
+            "url": "https://clinicaltrials.gov/study/NCT06303505",
+            "title": "FiH Study to Investigate Safety, PK and Efficacy of the NaPi2b ADC TUB-040 in Patients With PROC or r/r Adenocarcinoma NSCLC",
+            "excerpt": "Locations: United States, Belgium, Germany, Romania, Spain, Ukraine, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06899126",
+            "url": "https://clinicaltrials.gov/study/NCT06899126",
+            "title": "Study of Trastuzumab Deruxtecan, Pembrolizumab, and Platinum-based Chemotherapy in First-line HER2 Overexpressing Non-small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Belgium, Brazil, Chile, China, France, Germany, Greece, Hong Kong, India, Italy, Japan, Malaysia, Poland, Portugal, Romania, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Argentina",
+        "trial_count": 16,
+        "citations": [
+          {
+            "nct_id": "NCT03340506",
+            "url": "https://clinicaltrials.gov/study/NCT03340506",
+            "title": "Dabrafenib and/or Trametinib Rollover Study",
+            "excerpt": "Locations: United States, Argentina, Austria, China, Denmark, France, Germany, Hungary, Japan, Netherlands, Spain, Thailand"
+          },
+          {
+            "nct_id": "NCT07431827",
+            "url": "https://clinicaltrials.gov/study/NCT07431827",
+            "title": "MK-3475A±Calderasib (MK-1084) in Completely Resected Stage IIA-IIIB (N2) KRAS G12Cm NSCLC (MK-1084-013)",
+            "excerpt": "Locations: Argentina, Australia, Brazil, Canada, China, France, Greece, Hong Kong, Italy, South Korea, Spain, Taiwan, Turkey (Türkiye), Ukraine"
+          },
+          {
+            "nct_id": "NCT06780137",
+            "url": "https://clinicaltrials.gov/study/NCT06780137",
+            "title": "A Study to Evaluate the Safety and Efficacy of Gocatamig (MK-6070) and Ifinatamab Deruxtecan (I-DXd) in Participants With Relapsed/Refractory Extensive-Stage Small Cell Lung Cancer (MK-6070-002)",
+            "excerpt": "Locations: United States, Argentina, Australia, Chile, China, Israel, Japan, South Korea, Spain, Taiwan, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Chile",
+        "trial_count": 16,
+        "citations": [
+          {
+            "nct_id": "NCT07286149",
+            "url": "https://clinicaltrials.gov/study/NCT07286149",
+            "title": "A Clinical Study of MK-1084 With Other Treatments for Non-small Cell Lung Cancer (MK-3475-01F)",
+            "excerpt": "Locations: United States, Brazil, Chile, China, Germany, Greece, Hong Kong, Israel, Italy, South Korea, Spain"
+          },
+          {
+            "nct_id": "NCT06780137",
+            "url": "https://clinicaltrials.gov/study/NCT06780137",
+            "title": "A Study to Evaluate the Safety and Efficacy of Gocatamig (MK-6070) and Ifinatamab Deruxtecan (I-DXd) in Participants With Relapsed/Refractory Extensive-Stage Small Cell Lung Cancer (MK-6070-002)",
+            "excerpt": "Locations: United States, Argentina, Australia, Chile, China, Israel, Japan, South Korea, Spain, Taiwan, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT06899126",
+            "url": "https://clinicaltrials.gov/study/NCT06899126",
+            "title": "Study of Trastuzumab Deruxtecan, Pembrolizumab, and Platinum-based Chemotherapy in First-line HER2 Overexpressing Non-small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Belgium, Brazil, Chile, China, France, Germany, Greece, Hong Kong, India, Italy, Japan, Malaysia, Poland, Portugal, Romania, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Mexico",
+        "trial_count": 16,
+        "citations": [
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07100080",
+            "url": "https://clinicaltrials.gov/study/NCT07100080",
+            "title": "Study of Izalontamab Brengitecan (BMS-986507) Versus Platinum-Pemetrexed for EGFR-mutated Non-small Cell Lung Cancer After Failure of EGFR TKI Therapy (IZABRIGHT-Lung01)",
+            "excerpt": "Locations: United States, Argentina, Belgium, Canada, Chile, China, Colombia, France, Germany, Greece, India, Italy, Japan, Mexico, Netherlands, Norway, Poland, Romania, Singapore, South Korea, Spain, Switzerland, Taiwan, Thailand, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06793215",
+            "url": "https://clinicaltrials.gov/study/NCT06793215",
+            "title": "A Study Evaluating the Efficacy and Safety of Divarasib and Pembrolizumab Versus Pembrolizumab and Pemetrexed and Carboplatin or Cisplatin in Participants With Previously Untreated, KRAS G12C-Mutated, Advanced or Metastatic Non-Squamous Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Australia, Belgium, Brazil, Canada, China, Denmark, France, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Mexico, Netherlands, New Zealand, Poland, Portugal, Singapore, South Africa, South Korea, Spain, Switzerland, Taiwan, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "India",
+        "trial_count": 15,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT05278052",
+            "url": "https://clinicaltrials.gov/study/NCT05278052",
+            "title": "Standard Maintenance Therapy (SMT) vs Local Consolidative Radiation Therapy and SMT in OM-NSCLC",
+            "excerpt": "Locations: India"
+          },
+          {
+            "nct_id": "NCT06899126",
+            "url": "https://clinicaltrials.gov/study/NCT06899126",
+            "title": "Study of Trastuzumab Deruxtecan, Pembrolizumab, and Platinum-based Chemotherapy in First-line HER2 Overexpressing Non-small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Belgium, Brazil, Chile, China, France, Germany, Greece, Hong Kong, India, Italy, Japan, Malaysia, Poland, Portugal, Romania, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Malaysia",
+        "trial_count": 12,
+        "citations": [
+          {
+            "nct_id": "NCT07050043",
+            "url": "https://clinicaltrials.gov/study/NCT07050043",
+            "title": "Low Dose Nivolumab With Chemotherapy vs Standard Chemotherapy as First-Line Treatment in Advanced or Metastatic NSCLC",
+            "excerpt": "Locations: Malaysia"
+          },
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06899126",
+            "url": "https://clinicaltrials.gov/study/NCT06899126",
+            "title": "Study of Trastuzumab Deruxtecan, Pembrolizumab, and Platinum-based Chemotherapy in First-line HER2 Overexpressing Non-small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Belgium, Brazil, Chile, China, France, Germany, Greece, Hong Kong, India, Italy, Japan, Malaysia, Poland, Portugal, Romania, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Portugal",
+        "trial_count": 12,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06899126",
+            "url": "https://clinicaltrials.gov/study/NCT06899126",
+            "title": "Study of Trastuzumab Deruxtecan, Pembrolizumab, and Platinum-based Chemotherapy in First-line HER2 Overexpressing Non-small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Belgium, Brazil, Chile, China, France, Germany, Greece, Hong Kong, India, Italy, Japan, Malaysia, Poland, Portugal, Romania, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          }
+        ]
+      },
+      {
+        "country": "Ireland",
+        "trial_count": 11,
+        "citations": [
+          {
+            "nct_id": "NCT06253871",
+            "url": "https://clinicaltrials.gov/study/NCT06253871",
+            "title": "A Phase 1/1b Study of IAM1363 in HER2 Cancers",
+            "excerpt": "Locations: United States, France, Ireland, Italy, Netherlands, South Korea, Spain, United Kingdom"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06793215",
+            "url": "https://clinicaltrials.gov/study/NCT06793215",
+            "title": "A Study Evaluating the Efficacy and Safety of Divarasib and Pembrolizumab Versus Pembrolizumab and Pemetrexed and Carboplatin or Cisplatin in Participants With Previously Untreated, KRAS G12C-Mutated, Advanced or Metastatic Non-Squamous Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Australia, Belgium, Brazil, Canada, China, Denmark, France, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Mexico, Netherlands, New Zealand, Poland, Portugal, Singapore, South Africa, South Korea, Spain, Switzerland, Taiwan, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Sweden",
+        "trial_count": 10,
+        "citations": [
+          {
+            "nct_id": "NCT06347939",
+            "url": "https://clinicaltrials.gov/study/NCT06347939",
+            "title": "Mediastinal EBUS Cryobiopsy Study In Sweden",
+            "excerpt": "Locations: Sweden"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06486142",
+            "url": "https://clinicaltrials.gov/study/NCT06486142",
+            "title": "EGFR-mutated Lung Cancer in Randomized Investigator-Initiated Study",
+            "excerpt": "Locations: Sweden"
+          }
+        ]
+      },
+      {
+        "country": "Czechia",
+        "trial_count": 9,
+        "citations": [
+          {
+            "nct_id": "NCT07230691",
+            "url": "https://clinicaltrials.gov/study/NCT07230691",
+            "title": "A Study of Clinical Outcomes in Participants With EGFR Mutated Advanced Non-Small Cell Lung Cancer (NSCLC) in a Real-World Setting",
+            "excerpt": "Locations: Austria, Belgium, Czechia, Germany, Israel, Italy, Spain, United Kingdom"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06216301",
+            "url": "https://clinicaltrials.gov/study/NCT06216301",
+            "title": "LUNAR-2: TTFields With Pembrolizumab + Platinum-based Chemotherapy for Metastatic NSCLC",
+            "excerpt": "Locations: United States, Austria, Belgium, Czechia, France, Germany, Hungary, Israel, Italy, Japan, Netherlands, Poland, Singapore, Spain, Switzerland, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Bulgaria",
+        "trial_count": 7,
+        "citations": [
+          {
+            "nct_id": "NCT06712316",
+            "url": "https://clinicaltrials.gov/study/NCT06712316",
+            "title": "Safety, Efficacy, and Pharmacokinetics of BNT327 in Combination With Chemotherapy and Other Investigational Agents for Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Bulgaria, China, France, Georgia, Germany, Hungary, Italy, Japan, Poland, Romania, South Korea, Spain, Switzerland, Thailand, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07130916",
+            "url": "https://clinicaltrials.gov/study/NCT07130916",
+            "title": "A Study of Aumolertinib in European Participants With Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: Bosnia and Herzegovina, Bulgaria, Moldova"
+          }
+        ]
+      },
+      {
+        "country": "New Zealand",
+        "trial_count": 7,
+        "citations": [
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06793215",
+            "url": "https://clinicaltrials.gov/study/NCT06793215",
+            "title": "A Study Evaluating the Efficacy and Safety of Divarasib and Pembrolizumab Versus Pembrolizumab and Pemetrexed and Carboplatin or Cisplatin in Participants With Previously Untreated, KRAS G12C-Mutated, Advanced or Metastatic Non-Squamous Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Australia, Belgium, Brazil, Canada, China, Denmark, France, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Mexico, Netherlands, New Zealand, Poland, Portugal, Singapore, South Africa, South Korea, Spain, Switzerland, Taiwan, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06427941",
+            "url": "https://clinicaltrials.gov/study/NCT06427941",
+            "title": "A Phase 1 Study of BGB-B2033, Alone or in Combination With Tislelizumab With or Without Bevacizumab, in Participants With Advanced or Metastatic Solid Tumors",
+            "excerpt": "Locations: United States, Brazil, China, France, Italy, Japan, New Zealand, Puerto Rico, South Korea"
+          }
+        ]
+      },
+      {
+        "country": "Norway",
+        "trial_count": 7,
+        "citations": [
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07100080",
+            "url": "https://clinicaltrials.gov/study/NCT07100080",
+            "title": "Study of Izalontamab Brengitecan (BMS-986507) Versus Platinum-Pemetrexed for EGFR-mutated Non-small Cell Lung Cancer After Failure of EGFR TKI Therapy (IZABRIGHT-Lung01)",
+            "excerpt": "Locations: United States, Argentina, Belgium, Canada, Chile, China, Colombia, France, Germany, Greece, India, Italy, Japan, Mexico, Netherlands, Norway, Poland, Romania, Singapore, South Korea, Spain, Switzerland, Taiwan, Thailand, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06038227",
+            "url": "https://clinicaltrials.gov/study/NCT06038227",
+            "title": "Lung cAncer Robotic Comparative Study",
+            "excerpt": "Locations: Denmark, France, Germany, Italy, Norway, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Puerto Rico",
+        "trial_count": 7,
+        "citations": [
+          {
+            "nct_id": "NCT03556228",
+            "url": "https://clinicaltrials.gov/study/NCT03556228",
+            "title": "VMD-928 Monotherapy and in Combination With Pembrolizumab to Treat TrkA Overexpression Driven Solid Tumors or Lymphoma",
+            "excerpt": "Locations: United States, Puerto Rico"
+          },
+          {
+            "nct_id": "NCT06418204",
+            "url": "https://clinicaltrials.gov/study/NCT06418204",
+            "title": "Assessing Benefits and Harms of Cannabis/Cannabinoid Use Among Cancer Patients Treated in Community Oncology Clinics",
+            "excerpt": "Locations: United States, Puerto Rico"
+          },
+          {
+            "nct_id": "NCT06427941",
+            "url": "https://clinicaltrials.gov/study/NCT06427941",
+            "title": "A Phase 1 Study of BGB-B2033, Alone or in Combination With Tislelizumab With or Without Bevacizumab, in Participants With Advanced or Metastatic Solid Tumors",
+            "excerpt": "Locations: United States, Brazil, China, France, Italy, Japan, New Zealand, Puerto Rico, South Korea"
+          }
+        ]
+      },
+      {
+        "country": "Ukraine",
+        "trial_count": 6,
+        "citations": [
+          {
+            "nct_id": "NCT07431827",
+            "url": "https://clinicaltrials.gov/study/NCT07431827",
+            "title": "MK-3475A±Calderasib (MK-1084) in Completely Resected Stage IIA-IIIB (N2) KRAS G12Cm NSCLC (MK-1084-013)",
+            "excerpt": "Locations: Argentina, Australia, Brazil, Canada, China, France, Greece, Hong Kong, Italy, South Korea, Spain, Taiwan, Turkey (Türkiye), Ukraine"
+          },
+          {
+            "nct_id": "NCT04165070",
+            "url": "https://clinicaltrials.gov/study/NCT04165070",
+            "title": "KEYMAKER-U01 Substudy 01A: Efficacy and Safety Study of Pembrolizumab (MK-3475) With or Without Chemotherapy When Used With Investigational Agents in Treatment-naïve Participants With Stage IV Non-small Cell Lung Cancer (NSCLC) (MK-3475-01A/KEYMAKER-U01A)",
+            "excerpt": "Locations: United States, Hungary, Israel, Italy, Poland, South Korea, Spain, Taiwan, Ukraine"
+          },
+          {
+            "nct_id": "NCT06303505",
+            "url": "https://clinicaltrials.gov/study/NCT06303505",
+            "title": "FiH Study to Investigate Safety, PK and Efficacy of the NaPi2b ADC TUB-040 in Patients With PROC or r/r Adenocarcinoma NSCLC",
+            "excerpt": "Locations: United States, Belgium, Germany, Romania, Spain, Ukraine, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Colombia",
+        "trial_count": 5,
+        "citations": [
+          {
+            "nct_id": "NCT07100080",
+            "url": "https://clinicaltrials.gov/study/NCT07100080",
+            "title": "Study of Izalontamab Brengitecan (BMS-986507) Versus Platinum-Pemetrexed for EGFR-mutated Non-small Cell Lung Cancer After Failure of EGFR TKI Therapy (IZABRIGHT-Lung01)",
+            "excerpt": "Locations: United States, Argentina, Belgium, Canada, Chile, China, Colombia, France, Germany, Greece, India, Italy, Japan, Mexico, Netherlands, Norway, Poland, Romania, Singapore, South Korea, Spain, Switzerland, Taiwan, Thailand, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06623422",
+            "url": "https://clinicaltrials.gov/study/NCT06623422",
+            "title": "A Study of Pembrolizumab (MK-3475) With or Without Intismeran Autogene (V940) in Participants With Non-small Cell Lung Cancer (V940-009/INTerpath-009)",
+            "excerpt": "Locations: United States, Argentina, Australia, Belgium, Brazil, Bulgaria, Canada, Chile, Colombia, Finland, France, Germany, Greece, Hungary, Ireland, Israel, Italy, Japan, Netherlands, New Zealand, Peru, Poland, Romania, Singapore, South Korea, Spain, Sweden, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT06561386",
+            "url": "https://clinicaltrials.gov/study/NCT06561386",
+            "title": "A Study to Compare the Efficacy of Nivolumab and Relatlimab Plus Chemotherapy vs Pembrolizumab Plus Chemotherapy for Stage IV/Recurrent Non-squamous Non-small Cell Lung Cancer With PD-L1 Expression ≥ 1%",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Canada, Chile, China, Colombia, Denmark, France, Germany, India, Ireland, Italy, Japan, Mexico, Netherlands, New Zealand, Poland, Portugal, Romania, Saudi Arabia, South Africa, South Korea, Spain, Switzerland, Taiwan, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Georgia",
+        "trial_count": 5,
+        "citations": [
+          {
+            "nct_id": "NCT06712316",
+            "url": "https://clinicaltrials.gov/study/NCT06712316",
+            "title": "Safety, Efficacy, and Pharmacokinetics of BNT327 in Combination With Chemotherapy and Other Investigational Agents for Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Bulgaria, China, France, Georgia, Germany, Hungary, Italy, Japan, Poland, Romania, South Korea, Spain, Switzerland, Thailand, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06095583",
+            "url": "https://clinicaltrials.gov/study/NCT06095583",
+            "title": "Phase 3 Study of Toripalimab Alone or in Combination With Tifcemalimab as Consolidation Therapy in Patients With Limited-stage Small Cell Lung Cancer (LS-SCLC)",
+            "excerpt": "Locations: China, Georgia, Netherlands, Spain, Taiwan, Turkey (Türkiye)"
+          }
+        ]
+      },
+      {
+        "country": "Vietnam",
+        "trial_count": 5,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07291037",
+            "url": "https://clinicaltrials.gov/study/NCT07291037",
+            "title": "Phase III Study of Datopotamab Deruxtecan Versus Docetaxel in Previously Treated TROP2-positive Advanced or Metastatic Non-squamous NSCLC Without Actionable Genomic Alterations",
+            "excerpt": "Locations: United States, Australia, Austria, Belgium, Brazil, Canada, China, France, Germany, Hungary, India, Italy, Japan, Poland, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          }
+        ]
+      },
+      {
+        "country": "Finland",
+        "trial_count": 4,
+        "citations": [
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06623422",
+            "url": "https://clinicaltrials.gov/study/NCT06623422",
+            "title": "A Study of Pembrolizumab (MK-3475) With or Without Intismeran Autogene (V940) in Participants With Non-small Cell Lung Cancer (V940-009/INTerpath-009)",
+            "excerpt": "Locations: United States, Argentina, Australia, Belgium, Brazil, Bulgaria, Canada, Chile, Colombia, Finland, France, Germany, Greece, Hungary, Ireland, Israel, Italy, Japan, Netherlands, New Zealand, Peru, Poland, Romania, Singapore, South Korea, Spain, Sweden, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT07252739",
+            "url": "https://clinicaltrials.gov/study/NCT07252739",
+            "title": "KEYMAKER-U01 Substudy 01J: A Study of Pembrolizumab Plus MK-1084 in Participants With Non-Small Cell Lung Cancer (NSCLC) With Kirsten Rat Sarcoma Viral Oncogene Homolog (KRAS) G12C Mutations (MK-3475-01J/KEYMAKER-U01J)",
+            "excerpt": "Locations: United States, Chile, China, Finland, Greece, Hong Kong, Italy, Netherlands, South Korea, Spain, Thailand, Turkey (Türkiye), Ukraine"
+          }
+        ]
+      },
+      {
+        "country": "Moldova",
+        "trial_count": 4,
+        "citations": [
+          {
+            "nct_id": "NCT07111520",
+            "url": "https://clinicaltrials.gov/study/NCT07111520",
+            "title": "A Clinical Trial to Test if an Investigational Combination Therapy With BNT326 and BNT327 is Safe and Potentially Beneficial for People With Advanced Non-small Cell Lung Cancer (NSCLC)",
+            "excerpt": "Locations: United States, Australia, China, Germany, Italy, Moldova, Poland, Spain, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT07130916",
+            "url": "https://clinicaltrials.gov/study/NCT07130916",
+            "title": "A Study of Aumolertinib in European Participants With Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: Bosnia and Herzegovina, Bulgaria, Moldova"
+          }
+        ]
+      },
+      {
+        "country": "Russia",
+        "trial_count": 4,
+        "citations": [
+          {
+            "nct_id": "NCT05654454",
+            "url": "https://clinicaltrials.gov/study/NCT05654454",
+            "title": "A Safety and Efficacy Study of Bevacizumab, Paclitaxel, Carboplatin Compared to Avastin® in Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: Russia"
+          },
+          {
+            "nct_id": "NCT03175224",
+            "url": "https://clinicaltrials.gov/study/NCT03175224",
+            "title": "APL-101 Study of Subjects With NSCLC With c-Met EXON 14 Skip Mutations and c-Met Dysregulation Advanced Solid Tumors",
+            "excerpt": "Locations: United States, Australia, Canada, France, Hungary, Italy, Russia, Singapore, Spain, Taiwan, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06229340",
+            "url": "https://clinicaltrials.gov/study/NCT06229340",
+            "title": "Leflunomide or Combination of MEK Inhibitor and Hydroxychloroquine for Refractory Patients With RAS Mutations",
+            "excerpt": "Locations: Russia"
+          }
+        ]
+      },
+      {
+        "country": "Egypt",
+        "trial_count": 3,
+        "citations": [
+          {
+            "nct_id": "NCT06891183",
+            "url": "https://clinicaltrials.gov/study/NCT06891183",
+            "title": "Percutaneous Thermal Ablation in Lung Tumors",
+            "excerpt": "Locations: Egypt"
+          },
+          {
+            "nct_id": "NCT07122245",
+            "url": "https://clinicaltrials.gov/study/NCT07122245",
+            "title": "Demographics of Lung Cancer in Females",
+            "excerpt": "Locations: Egypt"
+          },
+          {
+            "nct_id": "NCT07040618",
+            "url": "https://clinicaltrials.gov/study/NCT07040618",
+            "title": "Rhomboid Intercostal Block vs Erector Spinae Block",
+            "excerpt": "Locations: Egypt"
+          }
+        ]
+      },
+      {
+        "country": "Philippines",
+        "trial_count": 3,
+        "citations": [
+          {
+            "nct_id": "NCT06417814",
+            "url": "https://clinicaltrials.gov/study/NCT06417814",
+            "title": "A Study to Investigate the Efficacy and Safety of Dato-DXd With or Without Osimertinib Compared With Platinum Based Doublet Chemotherapy in Participants With EGFR-Mutated Locally Advanced or Metastatic Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Germany, Greece, Hong Kong, India, Israel, Italy, Japan, Malaysia, Netherlands, Philippines, Poland, Portugal, Romania, Singapore, South Korea, Spain, Taiwan, Thailand, United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT04686305",
+            "url": "https://clinicaltrials.gov/study/NCT04686305",
+            "title": "Phase Ib Study of the Safety of T-DXd and Immunotherapy Agents With and Without Chemotherapy in Advanced or Metastatic HER2+, Non-squamous NSCLC",
+            "excerpt": "Locations: United States, Australia, Belgium, Brazil, Canada, China, France, Israel, Italy, Malaysia, Netherlands, Philippines, Poland, Singapore, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye)"
+          },
+          {
+            "nct_id": "NCT06345729",
+            "url": "https://clinicaltrials.gov/study/NCT06345729",
+            "title": "A Study of Calderasib (MK-1084) Plus Pembrolizumab (MK-3475) in Participants With KRAS G12C Mutant Non-small Cell Lung Cancer (NSCLC) With Programmed Cell Death Ligand 1 (PD-L1) Tumor Proportion Score (TPS) ≥50% (MK-1084-004/KANDLELIT-004)",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Brazil, Bulgaria, Canada, Chile, China, France, Georgia, Germany, Greece, India, Italy, Japan, Mexico, Netherlands, New Zealand, Philippines, Poland, Romania, South Korea, Spain, Turkey (Türkiye), Ukraine, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Estonia",
+        "trial_count": 2,
+        "citations": [
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          },
+          {
+            "nct_id": "NCT06284317",
+            "url": "https://clinicaltrials.gov/study/NCT06284317",
+            "title": "A Study to Evaluate the Benefit of Adding Durvalumab After Chemotherapy, Durvalumab and Surgery in Patients With Early-stage, Operable, Non-small Cell Lung Cancer.",
+            "excerpt": "Locations: Australia, Austria, Belgium, Estonia, France, Ireland, Italy, Netherlands, Switzerland, United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Peru",
+        "trial_count": 2,
+        "citations": [
+          {
+            "nct_id": "NCT06623422",
+            "url": "https://clinicaltrials.gov/study/NCT06623422",
+            "title": "A Study of Pembrolizumab (MK-3475) With or Without Intismeran Autogene (V940) in Participants With Non-small Cell Lung Cancer (V940-009/INTerpath-009)",
+            "excerpt": "Locations: United States, Argentina, Australia, Belgium, Brazil, Bulgaria, Canada, Chile, Colombia, Finland, France, Germany, Greece, Hungary, Ireland, Israel, Italy, Japan, Netherlands, New Zealand, Peru, Poland, Romania, Singapore, South Korea, Spain, Sweden, Taiwan, Thailand, Turkey (Türkiye), United Kingdom"
+          },
+          {
+            "nct_id": "NCT06996782",
+            "url": "https://clinicaltrials.gov/study/NCT06996782",
+            "title": "A Platform Study in Non-Small Cell Lung Cancer (NSCLC)",
+            "excerpt": "Locations: United States, Belgium, Brazil, China, France, Georgia, Germany, Italy, Japan, Malaysia, Moldova, Netherlands, Peru, Poland, Serbia, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye)"
+          }
+        ]
+      },
+      {
+        "country": "Serbia",
+        "trial_count": 2,
+        "citations": [
+          {
+            "nct_id": "NCT07391813",
+            "url": "https://clinicaltrials.gov/study/NCT07391813",
+            "title": "SNB-101 for Treatment of Extensive Stage Small Cell Lung Cancer",
+            "excerpt": "Locations: Serbia"
+          },
+          {
+            "nct_id": "NCT06996782",
+            "url": "https://clinicaltrials.gov/study/NCT06996782",
+            "title": "A Platform Study in Non-Small Cell Lung Cancer (NSCLC)",
+            "excerpt": "Locations: United States, Belgium, Brazil, China, France, Georgia, Germany, Italy, Japan, Malaysia, Moldova, Netherlands, Peru, Poland, Serbia, South Korea, Spain, Taiwan, Thailand, Turkey (Türkiye)"
+          }
+        ]
+      },
+      {
+        "country": "South Africa",
+        "trial_count": 2,
+        "citations": [
+          {
+            "nct_id": "NCT06793215",
+            "url": "https://clinicaltrials.gov/study/NCT06793215",
+            "title": "A Study Evaluating the Efficacy and Safety of Divarasib and Pembrolizumab Versus Pembrolizumab and Pemetrexed and Carboplatin or Cisplatin in Participants With Previously Untreated, KRAS G12C-Mutated, Advanced or Metastatic Non-Squamous Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Argentina, Australia, Belgium, Brazil, Canada, China, Denmark, France, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Mexico, Netherlands, New Zealand, Poland, Portugal, Singapore, South Africa, South Korea, Spain, Switzerland, Taiwan, United Kingdom"
+          },
+          {
+            "nct_id": "NCT06561386",
+            "url": "https://clinicaltrials.gov/study/NCT06561386",
+            "title": "A Study to Compare the Efficacy of Nivolumab and Relatlimab Plus Chemotherapy vs Pembrolizumab Plus Chemotherapy for Stage IV/Recurrent Non-squamous Non-small Cell Lung Cancer With PD-L1 Expression ≥ 1%",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Canada, Chile, China, Colombia, Denmark, France, Germany, India, Ireland, Italy, Japan, Mexico, Netherlands, New Zealand, Poland, Portugal, Romania, Saudi Arabia, South Africa, South Korea, Spain, Switzerland, Taiwan, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Bosnia and Herzegovina",
+        "trial_count": 1,
+        "citations": [
+          {
+            "nct_id": "NCT07130916",
+            "url": "https://clinicaltrials.gov/study/NCT07130916",
+            "title": "A Study of Aumolertinib in European Participants With Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: Bosnia and Herzegovina, Bulgaria, Moldova"
+          }
+        ]
+      },
+      {
+        "country": "Croatia",
+        "trial_count": 1,
+        "citations": [
+          {
+            "nct_id": "NCT07393490",
+            "url": "https://clinicaltrials.gov/study/NCT07393490",
+            "title": "Effect of Apneic Oxygenation of the Non-ventilated Lung During Lung Cancer Surgery.",
+            "excerpt": "Locations: Croatia"
+          }
+        ]
+      },
+      {
+        "country": "Latvia",
+        "trial_count": 1,
+        "citations": [
+          {
+            "nct_id": "NCT07472517",
+            "url": "https://clinicaltrials.gov/study/NCT07472517",
+            "title": "DAREON ® -Lung-1: A Study in People With Advanced Small Cell Lung Cancer to Compare Obrixtamig Plus Atezolizumab, Carboplatin, and Etoposide Treatment With Standard Chemotherapy",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Bulgaria, Canada, Chile, China, Czechia, Estonia, Finland, France, Georgia, Germany, Greece, Hong Kong, Hungary, Ireland, Italy, Japan, Latvia, Malaysia, Mexico, Moldova, Netherlands, New Zealand, Norway, Poland, Portugal, Romania, Singapore, South Korea, Spain, Sweden, Switzerland, Taiwan, Thailand, Turkey (Türkiye), United Kingdom, Vietnam"
+          }
+        ]
+      },
+      {
+        "country": "Lebanon",
+        "trial_count": 1,
+        "citations": [
+          {
+            "nct_id": "NCT06307249",
+            "url": "https://clinicaltrials.gov/study/NCT06307249",
+            "title": "Precision Therapy for Solid Tumors: Synergistic CDK4/6 Inhibition and Anti-VEGF Targeting LncRNA",
+            "excerpt": "Locations: Lebanon"
+          }
+        ]
+      },
+      {
+        "country": "Saudi Arabia",
+        "trial_count": 1,
+        "citations": [
+          {
+            "nct_id": "NCT06561386",
+            "url": "https://clinicaltrials.gov/study/NCT06561386",
+            "title": "A Study to Compare the Efficacy of Nivolumab and Relatlimab Plus Chemotherapy vs Pembrolizumab Plus Chemotherapy for Stage IV/Recurrent Non-squamous Non-small Cell Lung Cancer With PD-L1 Expression ≥ 1%",
+            "excerpt": "Locations: United States, Argentina, Australia, Austria, Belgium, Brazil, Canada, Chile, China, Colombia, Denmark, France, Germany, India, Ireland, Italy, Japan, Mexico, Netherlands, New Zealand, Poland, Portugal, Romania, Saudi Arabia, South Africa, South Korea, Spain, Switzerland, Taiwan, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Slovakia",
+        "trial_count": 1,
+        "citations": [
+          {
+            "nct_id": "NCT06890598",
+            "url": "https://clinicaltrials.gov/study/NCT06890598",
+            "title": "Study of Olomorasib (LY3537982) in Combination With Standard of Care in Participants With Resected or Unresectable KRAS G12C-mutant Non-Small Cell Lung Cancer",
+            "excerpt": "Locations: United States, Australia, Austria, Belgium, Brazil, Chile, China, Czechia, France, Germany, Greece, Hungary, India, Israel, Italy, Japan, Netherlands, Norway, Poland, Portugal, Romania, Slovakia, South Korea, Spain, Sweden, Switzerland, Taiwan, Turkey (Türkiye), United Kingdom"
+          }
+        ]
+      },
+      {
+        "country": "Tunisia",
+        "trial_count": 1,
+        "citations": [
+          {
+            "nct_id": "NCT06934499",
+            "url": "https://clinicaltrials.gov/study/NCT06934499",
+            "title": "Tunisian Lung Cancer Study",
+            "excerpt": "Locations: Tunisia"
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "query_interpretation": {
+      "intent": "Rank countries by recruiting lung cancer trials.",
+      "operation": "geo",
+      "dimension": "country",
+      "planner": "openai"
+    },
+    "filters": {
+      "condition": "lung cancer",
+      "status": "RECRUITING"
+    },
+    "source": "ClinicalTrials.gov",
+    "source_api": "https://clinicaltrials.gov/api/v2/studies",
+    "record_count": 1000,
+    "total_available": 2151,
+    "truncated": true,
+    "notes": [
+      "Analysed 1000 of 2151 matching trials (capped at 1000); counts are a sample, not registry totals.",
+      "A study running in several countries is counted once per country, so the column total exceeds the number of studies analysed."
+    ]
+  }
+}
