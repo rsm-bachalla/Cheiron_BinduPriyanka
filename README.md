@@ -370,9 +370,13 @@ missing row a frontend has to infer.
 
 Three consequences of groups being independent queries:
 
-- `meta.groups` reports `record_count`, `total_available`, and `truncated` **per
-  group**. One series capped at 1000 while the other returns 258 is not a
-  like-for-like chart, and the caller can see that.
+- **Truncation is reported independently per group**, because it lands unevenly.
+  `meta.groups` carries `record_count`, `total_available`, and `truncated` for
+  each series. Comparing pembrolizumab with vorinostat, the first returns 1,000
+  capped records of 2,528 matches while the second returns all 274 — one series
+  is a sample and the other is complete, which is not a like-for-like chart. A
+  single combined truncation flag would hide that; `meta.notes` also names the
+  affected series specifically.
 - **`total_available` is not summed.** Group match sets legitimately overlap — a
   trial studying both drugs really is in both series, and one was verified in the
   live registry — so a combined total would be a number with no defensible
